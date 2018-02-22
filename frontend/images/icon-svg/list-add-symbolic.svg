@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="24"
+   height="24"
+   id="svg7384"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="list-add-symbolic.svg"
+   inkscape:export-filename="D:\_Install\Apache24\htdocs\meetright\images\icon-svg\list-add-symbolic.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1024"
+     inkscape:window-height="712"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="-2.4745763"
+     inkscape:cy="8"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg7384" />
+  <title
+     id="title9167">Gnome Symbolic Icon Theme</title>
+  <defs
+     id="defs9" />
+  <metadata
+     id="metadata90">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Gnome Symbolic Icon Theme</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-55.864407,-721.9322)"
+     id="layer12">
+    <path
+       d="m 67,729 v 4 h -4 v 2 h 4 v 4 h 2 v -4 h 4 v -2 h -4 v -4 h -2 z"
+       inkscape:connector-curvature="0"
+       id="rect31992"
+       style="color:#bebebe;fill:#cc3d55;fill-opacity:1" />
+  </g>
+  <path
+     sodipodi:type="arc"
+     style="fill:none;stroke:#cc3d55;stroke-width:0.22826447000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.09999990000000030;stroke-opacity:1;stroke-dasharray:none"
+     id="path2992"
+     sodipodi:cx="7.762712"
+     sodipodi:cy="6.3389831"
+     sodipodi:rx="5.5932202"
+     sodipodi:ry="5.3898306"
+     d="m 13.355932,6.3389831 a 5.5932202,5.3898306 0 1 1 -11.1864402,0 5.5932202,5.3898306 0 1 1 11.1864402,0 z"
+     transform="matrix(2.0676853,0,0,2.164579,-4.050846,-1.653433)" />
+</svg>

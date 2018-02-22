@@ -1,0 +1,7 @@
+a { cursor: pointer; }
+.mark{background-color: #F1F3F2;}
+#carousel-album { height: 100px; float: left; }
+#carousel-album .carousel-inner { margin-left: 0%; width: 100%; }
+#carousel-album .item { height: 100px; overflow: hidden; }
+#carousel-album .item img { width: 100%; position: absolute; }
+#carousel-album .carousel-control { font-size: 30px; padding-top: 5px; }

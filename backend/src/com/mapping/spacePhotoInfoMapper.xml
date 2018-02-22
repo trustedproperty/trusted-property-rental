@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 场地图片信息数据层 -->
+<mapper namespace="com.service.ISpacePhotoInfoService">
+
+	<!-- 场地图片信息列表 -->
+	<resultMap type="SpacePhotoInfo" id="spacePhotoInfoList">
+		<id column="photoId" property="photoId" />
+		<result column="spaceId" property="spaceId" />
+		<result column="photoName" property="photoName" />
+		<result column="url" property="url" />
+	</resultMap>
+	<!-- 场地图片信息列表 -->
+
+	<!-- 查询场地图片 -->
+	<select id="photoSpaceId" resultMap="spacePhotoInfoList"
+		parameterType="string">
+		select
+		photoName,url
+		from
+		spacePhotoInfo where
+		spaceId=#{spaceId}
+	</select>
+	<!-- 查询场地图片 -->
+
+	<!-- 添加图片 -->
+	<insert id="addPhoto" parameterType="SpacePhotoInfo">
+		insert
+		spacePhotoInfo(photoId,spaceId,photoName,url)
+		values(#{photoId},#{spaceId},#{photoName},#{url})
+	</insert>
+	<!-- 添加图片 -->
+
+	<!-- 查询场地封面 -->
+	<select id="photo_space" parameterType="string" resultType="string">
+		select url from spacephotoInfo where spaceId=#{spaceId} ORDER BY
+		photoId ASC limit 0,1
+	</select>
+	<!-- 查询场地封面 -->
+
+	<!-- 删除图片 -->
+	<delete id="remove" parameterType="string">
+		delete from spacephotoInfo
+		where url=#{url}
+	</delete>
+	<!-- 删除图片 -->
+</mapper>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>网速测试</title>
+</head>
+
+<body>
+    <SCRIPT language=JavaScript>
+    var st = new Date();
+    </SCRIPT>
+    <IMG alt="测试图片" src="test.jpg" onload="showspeed()" style="width:400px;">
+    <div id='showtxt'></div>
+    <div id='showtxtsecond'></div>
+    <script>
+    var arr = ["网速低于50KB/每秒", "网速在50-100KB/每秒之间", "网速在100-200KB/每秒之间", "网速在200-300KB/每秒之间", "大于300KB/每秒"];
+
+    function showspeed() {
+        var filesize = 4088; //measured in KB     
+        var et = new Date();
+        var speed = Math.round(filesize) / (et - st);
+        //document.title = speed;
+        var scope = (speed > 0 && speed <= 50) ? 0 : (speed > 50 && speed <= 100) ? 1 : (speed >= 100 && speed < 200) ? 2 : (speed >= 200 && speed < 300) ? 3 : 4;
+        console.log(scope);
+        document.getElementById("showtxt").innerHTML = ("您和服务器的平均连接速度为：" + arr[scope] + " (K/秒)");
+        document.getElementById("showtxtsecond").innerHTML = ("您和服务器的瞬时连接速度为：" + speed + " KB/S");
+    }
+
+    //location.reload();
+
+    //setTimeout('location.reload();', 60*1000);
+
+    //setInterval('st = new Date();showspeed()', 1000);
+    </script>
+</body>
+
+</html>

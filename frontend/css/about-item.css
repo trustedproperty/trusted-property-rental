@@ -1,0 +1,16 @@
+.page .container { width: 90%; position: relative; margin: 0 auto; }
+.article { line-height: 24px; color: #333; font-size: 16px; padding-bottom: 40px; }
+a,
+div,
+input,
+select { -webkit-appearance: none; }
+a,
+div,
+input,
+select { -webkit-appearance: none; }
+user agent stylesheet
+div { display: block; }
+.about-item .article .article-title { border-bottom: 1px #ccc solid; }
+.article .article-title { font-size: 26px; line-height: 30px; color: #666; display: block; font-weight: 700; padding: 35px 0; }
+.article .article-sub-title { display: block; font-size: 16px; font-weight: 700; color: #333; padding-top: 30px; padding-left: 10px; position: relative; }
+.article .article-main { display: block; color: #000; font-size: 14px; line-height: 26px; padding-left: 10px; font-weight: 400; }

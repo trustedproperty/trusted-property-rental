@@ -1,0 +1,236 @@
+<!--发布需求-->
+<div class="row-fluid dialogEnquiry">
+    <div class="col-sm-12">
+        <form class="form-horizontal" id="idEnquiryForm_dialogEnquiry_HTML">
+            <fieldset>
+                <div class="form-group" style="margin-bottom:8px;">
+                    <!-- sr-only-->
+                    <h4 id="require-title" style="color: rgb(82, 133, 214);text-align: center;font-size:20px;font-weight:bold;letter-spacing: 1px;">免费获取场地报价</h4>
+                </div>
+                <div class="form-group" hidden>
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">需求地址</i>
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandCity" ng-value="spaceinfo.spaceAddress" ng-if="spaceinfo.spaceAddress!=''" />
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandCity" ng-value="'不限城市'" ng-if="spaceinfo.spaceAddress==''" />
+                    </div>
+                </div>
+                <div class="form-group" hidden>
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">需求区域</i>
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="districtId" ng-value="spaceinfo.districtId" ng-if="spaceinfo.districtId!=''" />
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="districtId" ng-value="'不限区域'" ng-if="spaceinfo.districtId==''" />
+                    </div>
+                </div>
+                <div class="form-group" hidden>
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">场地ID</i>
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="spaceId" ng-value="spaceinfo.spaceId" />
+                    </div>
+                </div>
+                <div class="form-group" hidden>
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">需求场地</i>
+                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandSpace" ng-value="spaceinfo.spaceName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <i class="explain">开始时间</i>
+                        <div class="input-group date form_datetime" data-date="2017-09-1" data-date-format="yyyy-MM-dd hh:ii" data-link-field="datetimepiker_input_2">
+                            <label for="datetimepiker_input_2" class="control-label"></label>
+                            <input class="form-control explainInput" size="16" type="text" value="" style="background-color: white;" placeholder="开始时间（点击选择）" name="beginTime" readonly />
+                            <div class="input-group-addon">
+                                <div class="glyphicon glyphicon-th"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="datetimepiker_input_1" value="" hidden/>
+                </div>
+                <div class="form-group" style="margin-bottom:8px;">
+                    <div class="col-sm-12">
+                        <i class="explain">&#xe60b 时长</i>
+                        <div class="input-group">
+                            <input class="form-control explainInput" placeholder="天数" type="text" name="timeLength" />
+                            <div class="input-group-addon">天</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <i class="explain">活动类型</i>
+                        <select class="form-control explainInput" name="activityType">
+                            <option ng-repeat="spacetype in spacetypes" ng-bind="spacetype.spaceTypeName" ng-value="spacetype.spaceTypeName"></option>
+                        </select>
+                    </div>
+                </div>
+                <!--人数-->
+                <div class="form-group">
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">人数预估</i>
+                        <input class="form-control explainInput" type="text" name="demandNum" value="0" ng-value="spaceinfo.spaceNum" />
+                    </div>
+                </div>
+                <!--/.人数-->
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group">
+                    <!-- sr-only-->
+                    <div class="col-sm-12">
+                        <i class="explain">预算</i>
+                        <div class="input-group">
+                            <div class="input-group-addon explainInput" style="background-color: white;">￥</div>
+                            <input class="form-control" type="number" min="100" max="9000000" step="100" name="price" value="0" ng-value="spaceinfo.spacePrice" />
+                            <div class="input-group-addon" style="background-color: white;">.00</div>
+                        </div>
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group" style="padding-bottom:8px;">
+                    <div class="col-sm-12">
+                        <i class="explain" style="line-height:52px;">&#xe60c 备注</i>
+                        <textarea class="form-control explainInput" type="text" placeholder="纯文本" name="additionalDemand" style="height:88px;"></textarea>
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group" hidden>
+                    <div class="col-sm-12">
+                        <i class="explain">发布者Id</i>
+                        <input class="form-control explainInput" placeholder="发布者Id（自动捕捉，默认隐藏）" name="userId" type="text" ng-value="thisUserId" />
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <i class="explain">&#xe605 姓名</i>
+                        <input class="form-control explainInput" placeholder="中文姓名" type="text" name="contacts" />
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <i class="explain">&#xe60d 组织名</i>
+                        <input class="form-control explainInput" placeholder="公司/机构/圈子名称" type="text" name="unitName" />
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <i class="explain">&#xe602 手机号</i>
+                        <input class="form-control explainInput" id="inputUserPhone_dialogEnquiry" placeholder="数字" name="contactsPhone" type="text" />
+                    </div>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="form-group" style="padding-bottom:18px;">
+                    <div class="col-sm-12">
+                        <i class="explain">&#xe601 验证码</i>
+                        <div class="col-sm-8" style="padding:0px;">
+                            <input class="form-control explainInput" name="codeIdentify" placeholder="数字" type="text" />
+                        </div>
+                        <div class="col-sm-4" style="padding:0px;">
+                            <input class="btn btn-primary col-sm-12 angle" value="发送验证码" onclick="sendAuthcode_dialogEnquiry()" id="btnSendCode_dialogEnquiry" type="button" />
+                        </div>
+                    </div>
+                    <!--  ng-model="userInfo.userPass" -->
+                </div>
+                <script type="text/javascript">
+                var InterValObj_dialogEnquiry; //timer变量，控制时间
+                var count_dialogEnquiry = 60; //间隔函数，1秒执行
+                var curCount_dialogEnquiry; //当前剩余秒数
+
+                function sendAuthcode_dialogEnquiry() {　
+                    //向后台发送处理数据
+                    var str = "userPhone=" + document.getElementById("inputUserPhone_dialogEnquiry").value;
+                    console.log(str);
+                    $.ajax({　
+                        url: 'dreamSpace/userInfo/sendCode.html', //目标地址
+                        type: "GET", //用POST方式传输
+                        data: str,
+                        processData: false, // 告诉jQuery不要去处理发送的数据
+                        contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                        error: function(status) {
+                            console.log(status);
+                        },
+                        success: function(status) {
+                            console.log(status);
+                        }
+                    });
+                    //
+                    curCount_dialogEnquiry = count_dialogEnquiry;　　 //设置button效果，开始计时
+                    $("#btnSendCode_dialogEnquiry").attr("disabled", "true");
+                    $("#btnSendCode_dialogEnquiry").val("等待" + curCount_dialogEnquiry + "秒");
+                    InterValObj_dialogEnquiry = window.setInterval(setAuthcodeTime_dialogEnquiry, 1000); //启动计时器，1秒执行一次
+                }
+                //timer处理函数
+                function setAuthcodeTime_dialogEnquiry() {
+                    if (curCount_dialogEnquiry == 0) {
+                        window.clearInterval(InterValObj_dialogEnquiry); //停止计时器
+                        $("#btnSendCode_dialogEnquiry").removeAttr("disabled"); //启用按钮
+                        $("#btnSendCode_dialogEnquiry").val("重新发送");
+                    } else {
+                        curCount_dialogEnquiry--;
+                        $("#btnSendCode_dialogEnquiry").val("等待" + curCount_dialogEnquiry + "秒");
+                    }
+                }
+                </script>
+                <div class="form-group">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <button class="btn btn-danger col-sm-12" onclick="publishEnquiry_dialogEnquiry_HTML();">免费获取场地报价</button>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!--/.发布需求-->
+    <script>
+    function publishEnquiry_dialogEnquiry_HTML() {
+        console.log("dreamSpace/space/insertDemand.html");
+        console.log($('#idEnquiryForm_dialogEnquiry_HTML').serialize());
+        $.ajax({
+            type: "post",
+            url: "dreamSpace/space/insertDemand.html", //请求路径
+            data: $('#idEnquiryForm_dialogEnquiry_HTML').serialize(),
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                console.log("success");
+                console.log("data");
+                console.log(data);
+                if (data.data == "success") {
+                    setTimeout('window.location.href = "/success.html?type=require";', 1000);
+                }
+                /* else if (data.error == "验证码不正确") {
+                                console.log('return "error-inputCheck";');
+                                return "error-inputCheck";
+                            }*/
+            },
+            error: function(data) {
+                console.error("error");
+                return data;
+                //setCookie('userId', data.userInfo.userId);
+                //setCookie('userName', data.userInfo.userName);
+            }
+        });
+    }
+    </script>
+</div>
+<!--/.发布需求-->

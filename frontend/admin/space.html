@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>网站管理系统</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images\www.favicon.ico" media="screen" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--  通用  -->
+    <!-- Bootstrap Core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--  专用  -->
+    <!-- Custom CSS -->
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- 自定义 -->
+    <link href="/css/global.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    /*myCarousel*/
+    
+    #myCarousel {
+        height: 300px;
+        width: 100%;
+    }
+    
+    #myCarousel .carousel-inner {
+        margin-left: 0%;
+        width: 100%;
+    }
+    
+    #myCarousel .item {
+        height: 300px;
+        overflow: hidden;
+    }
+    
+    #myCarousel .item img {
+        height: 300px;
+        width: 100%;
+        margin-top: 0px;
+        position: absolute;
+        clip: rect(0px auto 300px auto);
+    }
+    
+    #myCarousel .carousel-control {
+        font-size: 80px;
+        padding-top: 15%;
+    }
+    </style>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- js:百度地图2.0 -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7bf0292149137baed3859e61732f61ca"></script>
+    <!-- js:百度地图InfoBox -->
+    <script type="text/javascript" src="/js/InfoBox_min.js"></script>
+</head>
+
+<body ng-app="SpaceAPP" ng-controller="spaceinfoController as controller">
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div id="wrapper">
+        <!--    -->
+        <!--    -->
+        <!--    -->
+        <div ng-include="'includes/nav.html'"></div>
+        <!--    -->
+        <!--    -->
+        <!--    -->
+        <div id="page-wrapper">
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <!--修改场地-->
+            <div>
+                <div class="row-fluid">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" id="updateSpaceForm" name="adminSpaceForm" ng-submit="submit()" novalidate="novalidate" autocomplete="off">
+                            <fieldset hidden>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>0. 隐藏区域</h4>
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场地Id</label>
+                                    </div>
+                                    <input class="col-sm-6" type="text" placeholder="场地Id" ng-value="spaceinfo.spaceId" />
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">位置</label>
+                                    </div>
+                                    <input class="col-sm-6" type="text" placeholder="地图定位XY" ng-value="spaceinfo.position" name="Position" />
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">请求者Id</label>
+                                    </div>
+                                    <input class="col-sm-6" type="text" placeholder="请求者Id" ng-value="thisVisitId" name="visitId" />
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场地封面</label>
+                                    </div>
+                                    <input class="col-sm-6" type="text" placeholder="场地封面（默认隐藏）" ng-value="photos[0].url" ng-if="photoslength!='noPhoto'" name="spacePhoto" />
+                                    <input class="col-sm-6" type="text" placeholder="场地封面（默认隐藏）" value="/images/spacePhoto.jpg" ng-if="photoslength=='noPhoto'" name="spacePhoto" />
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">热度权重</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input class="form-control" type="text" placeholder="数字" ng-value="spaceinfo.hotSpace" name="spaceHot" />
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                            </fieldset>
+                            <!--    -->
+                            <!--    -->
+                            <!--    -->
+                            <fieldset id="space_brief">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>1. 概况</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场地名称</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe615</i>
+                                        <input class="form-control iconInput" type="text" placeholder="中文名称" ng-value="spaceinfo.spaceName" name="spaceName" id="inputSpaceName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">正式名称</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe615</i>
+                                        <input class="form-control iconInput" type="text" placeholder="中文名称" ng-value="spaceinfo.legalName" name="legalName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label for="selectStatu" class="form-control-label">状态</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select id="selectStatu" class="col-sm-12" name="spaceStatus">
+                                            <option value="0" ng-selected="spaceinfo.spaceStatus == 0">已上线</option>
+                                            <option value="1" ng-selected="spaceinfo.spaceStatus == 1">未审核</option>
+                                            <option value="2" ng-selected="spaceinfo.spaceStatus == 2">已驳回</option>
+                                            <option value="3" ng-selected="spaceinfo.spaceStatus == 3">已下线</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--<div class="form-group">
+                                    <label class="form-control-label">状态备注</label>
+                                    <textarea type="" class=" col-sm-6" placeholder="管理员状态管理说明"></textarea>
+                                    <span class="col-sm-4">最大5000个字符</span>
+                                </div>-->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">城市/区域</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="col-sm-6" ng-model="thisSelectCityId" ng-options="city.cityId as city.cityName for city in citys" changedistrict>
+                                        </select>
+                                        <input type="text" ng-value="thisSelectCityId" name="cityId" hidden />
+                                        <select class="col-sm-6" name="districtId">
+                                            <option ng-repeat="district in districts" ng-selected="district.districtId == thisSelectDistrictId" ng-value="district.districtId" ng-bind="district.districtName" ng-if="district.cityId==thisSelectCityId"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">商圈</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe610</i>
+                                        <input class="form-control iconInput" type="text" name="spaceAddress" placeholder="&#xe610 地址" ng-value="spaceinfo.spaceAddress" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">地图地址</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe610</i>
+                                        <input class="form-control iconInput" id="inputSpaceDetailAddress" type="text" ng-value="spaceinfo.spaceDetailAddress" name="spaceDetailAddress" placeholder="地址" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-primary" href="javascript:void(0);" onclick="displayMapAddress('inputSpaceDetailAddress','inputSpaceName');">预览地址</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">地图预览</label>
+                                    </div>
+                                    <!--场地地图-->
+                                    <div class="col-sm-6" id="SpaceMap">
+                                        <div id="mapContainer" style="top:0px;width: 100%;height: 400px;margin:0px;padding:0px;/*border: 1px solid gray;*/overflow:hidden;">
+                                        </div>
+                                        <div hidden>
+                                            <div>隐藏区域</div>
+                                            <span>要查询的地址：<input id="text_" type="text" value="上海浦东" style="margin-right:100px;" /></span>
+                                            <span>查询结果(经纬度)：<input id="result_" type="text" /></span>
+                                            <input type="button" value="查询" onclick="searchByStationNamebyKeyword('上海浦东','测试展示信息');" />
+                                            <input id="testMapView" type="text" value="<br />测试展示信息" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                var map = new BMap.Map("mapContainer");
+                                //鼠标控制                
+                                map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
+                                map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
+                                //地图类型控制（右上角）
+                                var mapType1 = new BMap.MapTypeControl({
+                                    mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+                                });
+                                map.addControl(mapType1); //2D图，卫星图
+                                map.centerAndZoom("浦东", 12);
+                                //缩略图
+                                map.addControl(new BMap.NavigationControl()); //添加默认缩放平移控件
+                                map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+                                map.addControl(new BMap.OverviewMapControl({
+                                    isOpen: 1,
+                                    anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+                                })); //右下角，打开
+
+                                var localSearch = new BMap.LocalSearch(map);
+                                localSearch.enableAutoViewport(); //允许自动调节窗体大小
+                                function searchByStationNamebyKeyword(Keyword, View) {
+                                    map.clearOverlays(); //清空原来的标注
+                                    var keyword = Keyword;
+                                    console.log("Keyword：" + Keyword);
+                                    console.log('keyword：' + keyword);
+                                    localSearch.setSearchCompleteCallback(function(searchResult) {
+                                        var poi = searchResult.getPoi(0);
+                                        document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+                                        //console.log(poi.point.lng + "," + poi.point.lat);
+                                        map.centerAndZoom(poi.point, 15);
+                                        var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat)); // 创建标注，为要查询的地方对应的经纬度
+                                        map.addOverlay(marker);
+
+                                        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+                                        var content = View; //要展示的信息
+                                        console.log("content");
+                                        console.log(content);
+                                        //标签窗体
+                                        var html = [content];
+                                        /*
+                                        var infoBox = new BMapLib.InfoBox(map, html.join(""), {
+                                            offset: new BMap.Size(0, 25),
+                                            boxStyle: {
+                                                "background-color": "#BFE1FF",
+                                                border: "3px double #286090",
+                                                width: "200px",
+                                                height: "100px",
+                                                padding: "20px",
+                                                "font-size": "16px",
+                                                "padding-right": "40px",
+                                                "border-radius": "20px"
+                                            },
+                                            closeIconMargin: "1px 1px 0 0",
+                                            enableAutoPan: true,
+                                            align: INFOBOX_AT_TOP
+                                        });
+                                        infoBox.open(marker); //打开提示
+                                        marker.addEventListener("click", function() {
+                                            infoBox.open(marker);
+                                        });*/
+                                        //
+                                        var opts = {
+                                            position: poi.point, // 指定文本标注所在的地理位置
+                                            offset: new BMap.Size(20, -40) //设置文本偏移量
+                                        }
+                                        var spacelabel = new BMap.Label(content, opts); // 创建文本标注对象
+                                        spacelabel.setStyle({
+                                            color: "black",
+                                            fontSize: "14px",
+                                            height: "30px",
+                                            lineHeight: "30px",
+                                            fontFamily: "微软雅黑",
+                                            padding: "0 5px 0 5px",
+                                            border: "1px solid #1FA561",
+                                            "border-radius": "5px"
+                                        });
+                                        map.addOverlay(spacelabel);
+                                    });
+                                    localSearch.search(keyword);
+                                }
+
+                                function displayMapAddress(inputAddressId, inputTitleId) {
+                                    var Address = document.getElementById(inputAddressId).value;
+                                    var Title = document.getElementById(inputTitleId).value;
+                                    searchByStationNamebyKeyword(Address, Title);
+                                }
+                                </script>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场主姓名</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe605</i>
+                                        <input class="form-control iconInput" type="text" placeholder="姓名" ng-value="spaceinfo.trueName" readonly />
+                                    </div>
+                                </div>
+                                <!--<div class="form-group">
+                                    <label class="form-control-label">场主手机号</label>
+                                    <input class="col-sm-6" type="text" placeholder="手机号" value="13888888888" disabled/>
+                                </div>-->
+                            </fieldset>
+                            <fieldset id="space_inside">
+                                <!-- style="display:none;" id="testnameit"-->
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>2. 规格</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场地类型</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="col-sm-12" name="spaceTypeId">
+                                            <option ng-repeat="spacetype in spacetypes" ng-value="spacetype.spaceTypeId" ng-bind="spacetype.spaceTypeName" ng-selected="spacetype.spaceTypeName==thisSelectTypeName"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">设施</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-6" ng-repeat="facilityinfo in facilityinfos" id="scopeFacilityInfo">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" ng-value="facilityinfo.facilityId" onClick="Checkbox2Input(this.form,'scopeFacilityInfo','inputFacilityInfoId')" ng-checked="isSpaceFacility(facilityinfo.facilityId)" />
+                                                <span ng-bind="facilityinfo.facilityName"></span>
+                                            </label>
+                                        </div>
+                                        <input id="inputFacilityInfoId" class="col-sm-12" name="facilityId" hidden/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label type="number" class="form-control-label">面积范围</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe616</i>
+                                        <input class="form-control iconInput" ng-value="spaceinfo.spaceArea" name="spaceArea" placeholder="平方米m2" />
+                                    </div>
+                                </div>
+                                <!--人数-->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">人数容积</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="col-sm-12" name="spaceNum">
+                                            <option ng-repeat="guestnumber in guestnumbers" ng-value="guestnumber.nameGuestnumber" ng-bind="guestnumber.textGuestnumber" ng-selected="guestnumber.nameGuestnumber==spaceinfo.spaceNum"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">简介</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe60c</i>
+                                        <textarea class="form-control iconInput" type="text" placeholder="最大5000个字符" ng-bind="spaceinfo.introduce" name="Introduce">好好好</textarea>
+                                    </div>
+                                    <span class="col-sm-4"></span>
+                                </div>
+                                <!--<div class="form-group">
+                                    <label class="form-control-label">常见问题解答</label>
+                                    <textarea type="" class=" col-sm-6" placeholder="常见问题解答和答案(最大5000个字符)">特别好</textarea>
+                                    <span class="col-sm-4"></span>
+                                </div>-->
+                            </fieldset>
+                            <fieldset id="space_policy">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>3. 政策</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">预定政策</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-6" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="允许议价" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','inputSpacePolicy')" ng-checked="isSpacePolicy('允许议价')" />
+                                                <span>允许议价</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-6" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="最佳价格" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','inputSpacePolicy')" ng-checked="isSpacePolicy('最佳价格')" />
+                                                <span>最佳价格</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-6" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="预订餐饮" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','inputSpacePolicy')" ng-checked="isSpacePolicy('预订餐饮')" />
+                                                <span>预订餐饮</span>
+                                            </label>
+                                        </div>
+                                        <input id="inputSpacePolicy" name="spacePolicy" class="col-sm-12" hidden/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">取消政策</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" name="reservationPolicy" ng-model="controller.reservationPolicy" style="margin-bottom:20px;">
+                                            <option value="strict" ng-selected="spaceinfo.reservationPolicy == 'strict'">严格</option>
+                                            <option value="medium" ng-selected="spaceinfo.reservationPolicy == 'medium'">中等</option>
+                                            <option value="loose" ng-selected="spaceinfo.reservationPolicy == 'loose'">宽松</option>
+                                        </select>
+                                        <div class="help-block">
+                                            <p ng-if="controller.reservationPolicy=='strict'">
+                                                严格 （Strict）：如果取消预定，不予返还定金。
+                                            </p>
+                                            <p ng-if="controller.reservationPolicy=='medium'">
+                                                中等 （Moderate）：如果在入场14天之前取消，可以返还50%的定金。
+                                            </p>
+                                            <p ng-if="controller.reservationPolicy=='loose'">
+                                                宽松 （Flexible）：如果在入场5天之前取消，可以返还50%的定金。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset id="space_price">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>4. 价格</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">标准定金</label>
+                                    </div>
+                                    <div class="input-group col-sm-6">
+                                        <span class="input-group-addon">￥</span>
+                                        <input name="spacePrice" type="text" class="form-control" ng-value="spaceinfo.spacePrice" placeholder="金额">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label" ng-if="$index == 0">价格列表</label>
+                                    </div>
+                                    <div ng-repeat="pricelist in pricelists" style="margin-bottom:10px;">
+                                        <div class="col-sm-2" ng-if="$index != 0"></div>
+                                        <div class="input-group col-sm-6">
+                                            <span ng-bind="listpricetypes[$index].nameDateType+'价格：￥'" class="input-group-addon"></span>
+                                            <input placeholder="金额" ng-value="pricelist.priceListItem" class="form-control" type="number" min="1" max="100000000" id="{{listpricetypes[$index].idDateType}}" />
+                                            <span class="input-group-addon">.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset id="space_album">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>5. 相册</h4>
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">场地相册</label>
+                                    </div>
+                                    <!--场地相册幻灯片-->
+                                    <div class="col-sm-6" id="admin_space_HTML">
+                                        <div class="carousel slide" id="myCarousel">
+                                            <!-- 轮播（Carousel）指标 -->
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#myCarousel" class="active" data-slide-to="0" ng-repeat="photo in photos" ng-if="$index == 0"></li>
+                                                <li data-target="#myCarousel" data-slide-to="{{$index}}" ng-repeat="photo in photos" ng-if="$index != 0"></li>
+                                            </ol>
+                                            <!-- 轮播（Carousel）项目 -->
+                                            <div class="carousel-inner" id="myCarousel_area">
+                                                <div class="item active" ng-repeat="photo in photos" ng-if="$index == 0">
+                                                    <img ng-src="/upload/changdipai/images/album/{{photo.url}}" alt="First slide">
+                                                    <div class="carousel-caption">
+                                                        <h2 ng-bind="photo.photoName"></h2>
+                                                    </div>
+                                                </div>
+                                                <div class="item" ng-repeat="photo in photos" ng-if="$index != 0">
+                                                    <img ng-src="/upload/changdipai/images/album/{{photo.url}}" alt="Other slide">
+                                                    <div class="carousel-caption">
+                                                        <h2 ng-bind="photo.photoName"></h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 轮播（Carousel）导航 -->
+                                            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                                            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                                        </div>
+                                        <!--/.场地相册幻灯片-->
+                                        <div style="margin-bottom:10px;"></div>
+                                        <!--<a class="btn btn-primary" type="button" href="space_photo.html">管理相册</a>-->
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-4">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div id="deletePhotoReturn"></div>
+                                                <!--<input id="inputDeletePhotoReturn" type="text" ng-model="ngDeletePhotoReturn" ng-change="deletePhotoSuccessFunc()" />-->
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-danger" type="button" onclick="deletePhoto();">删除照片</button>
+                                            </div>
+                                        </div>
+                                        <div style="margin-bottom:10px;"></div>
+                                        <script type="text/javascript">
+                                        //禁止自动播放
+                                        $(document).ready(function() {
+                                            $('#myCarousel').carousel({
+                                                pause: true,
+                                                interval: false
+                                            });
+                                        });
+
+                                        /*function getActiveDOM(node, classname) {
+                                            if (node.getElementsByClassName) {
+                                                return node.getElementsByClassName(classname);
+                                                //如果存在该标签 就返回
+                                            } else {
+                                                var elems = node.getElementsByTagName(node);
+                                                var defualt = [];
+                                                for (var i = 0; i < elems.length; i++) {
+                                                    //遍历所有标签
+                                                    if (elems[i].className.indexOf(classname) != -1) {
+                                                        //查找相应类名的标签
+                                                        defualt[defualt.length] = elems[i];
+                                                    }
+                                                }
+                                                return defualt;
+                                            }
+                                        }
+
+                                        function deleteTextChildDom(elem) {
+                                            var elem_child = elem.childNodes;
+                                            for (var i = 0; i < elem_child.length; i++) {
+                                                if (elem_child[i].nodeName == "#text" && !/\s/.test(elem_child.nodeValue)) {
+                                                    elem.removeChild(elem_child[i]);
+                                                } else if (elem_child[i].nodeName == "#comment") {
+                                                    elem.removeChild(elem_child[i]);
+                                                }
+                                            }
+                                            return elem;
+                                        }*/
+
+                                        function deletePhoto() {
+                                            var photoName = "";
+                                            var dom = document.getElementById('myCarousel_area');
+                                            console.log("dom");
+                                            console.log(dom);
+                                            var childs = dom.childNodes;
+                                            //清理无效节点
+                                            for (var i = childs.length - 1; i >= 0; i--) {
+                                                if (childs[i].nodeName == "#text" || childs[i].nodeName == "#comment") {
+                                                    dom.removeChild(childs[i]);
+                                                }
+                                            }
+                                            console.log("childs");
+                                            console.log(childs);
+                                            var thisChild;
+                                            var isAjax = false;
+                                            //获得当前展示照片节点
+                                            for (var i = childs.length - 1; i >= 0; i--) {
+                                                if (childs[i].nodeName != "#text" && childs[i].nodeName != "#comment") {
+                                                    if (hasClass(childs[i], 'active')) {
+                                                        thisChild = childs[i];
+                                                        if (i != childs.length - 1) {
+                                                            nextChild = childs[i + 1];
+                                                        } else if (i != 0) {
+                                                            nextChild = childs[0];
+                                                        } else {
+                                                            //nextChild = childs[0];
+                                                        }
+                                                        //获得图片名
+                                                        var phonoUrl = decodeURI(thisChild.getElementsByTagName('img')[0].src);
+                                                        var arrUrl = phonoUrl.split("/");
+                                                        var phonoName = arrUrl[arrUrl.length - 1];
+                                                        console.log(phonoName);
+                                                        //准备ajax
+                                                        isAjax = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            console.log("thisChild");
+                                            console.log(thisChild);
+                                            //发起ajax请求
+                                            if (isAjax) {
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "/dreamSpace/space/removePhoto.html", //请求路径
+                                                    data: "photo=" + phonoName,
+                                                    dataType: "json",
+                                                    async: false,
+                                                    success: function(data) {
+                                                        console.log("deletePhoto success");
+                                                        console.log(data);
+                                                        if (data.message == "success") {
+                                                            document.getElementById('deletePhotoReturn').innerHTML = '照片删除成功，保存修改后刷新';
+                                                            //document.getElementById('inputDeletePhotoReturn').value = "0";
+                                                            //console.log(thisChild);
+                                                            //addClass(thisChild.nextSbiling, 'active');
+                                                            //console.log(nextChild);
+                                                            //addClass(nextChild, 'active');
+                                                            //removeClass(thisChild, 'active');
+                                                        } else {
+                                                            document.getElementById('deletePhotoReturn').innerHTML = '照片删除失败';
+                                                        }
+                                                    },
+                                                    error: function(data) {
+                                                        console.log("deletePhoto error");
+                                                        console.log(data);
+                                                        alert(data.message);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        </script>
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group" ng-class="{'has-error':adminSpaceForm.inputPhotoErrorType.$invalid}">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">选择照片</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div>
+                                            <div hidden>
+                                                <input id="inputMultifile" type="file" multiple size="30" />
+                                            </div>
+                                            <input class="btn btn-primary" type="button" onclick="selectPhoto_SpacesPublishHtml();" value="选择照片" />
+                                            <script type="text/javascript">
+                                            function selectPhoto_SpacesPublishHtml() {
+                                                document.getElementById("inputMultifile").click();
+                                            }
+                                            </script>
+                                        </div>
+                                        <div hidden>
+                                            <!--检测照片-->
+                                            <input id="inputPhotoErrorType" name="inputPhotoErrorType" ng-model="controller.inputPhotoErrorType" ng-minlength="3" />
+                                            <!--警告信息连接框-->
+                                            <input id="idInputPhotoErrorDialog" ng-model="inputPhotoErrorDialog" />
+                                        </div>
+                                        <div>
+                                            <div id="resultAlbum" class="col-sm-12"></div>
+                                            <div class="help-block" ng-messages="adminSpaceForm.inputPhotoErrorType.$error" ng-if="adminSpaceForm.inputPhotoErrorType.$invalid">
+                                                <p ng-message="minlength" ng-bind="inputPhotoErrorDialog"></p>
+                                            </div>
+                                            <div ng-if="!adminSpaceForm.inputPhotoErrorType.$invalid">
+                                                <p ng-bind="'照片预览完成'" ng-cloak></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="help-block">
+                                            <p>照片须知</p>
+                                            <p>请您仔细阅读下列标准，按规格准备照片。</p>
+                                            <p>1. 可以不上传，一次上传不超过30张。</p>
+                                            <p>2. 推荐jpg、jpeg、png格式。</p>
+                                            <p>3. 照片大小要求：大于50KB，小于5M。</p>
+                                            <p>4. 为保证视觉质量，照片分辨率至少 600 × 400 像素。</p>
+                                            <p>5. 照片宽高比应在 1 - 3 之间。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $('#inputMultifile').change(function() {
+                                        var MaxImgLength = 30;
+                                        var MinImgLength = 0;
+                                        var MinImgWidth = 600; //1200
+                                        var MinImgHeight = 400; //750
+                                        var MaxImgSize = 5 * 1024 * 1024; //5M
+                                        var MinImgSize = 50 * 1024; //50KB
+                                        var MaxImgRate = 3;
+                                        var MinImgRate = 1;
+                                        //照片检测
+                                        //预览提示
+                                        document.getElementById("resultAlbum").innerHTML = "";
+                                        document.getElementById("idInputPhotoErrorDialog").value = "照片载入中，请耐心等待 . . .";
+                                        $("#idInputPhotoErrorDialog").trigger('input');
+                                        document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                        $("#inputPhotoErrorType").trigger('input');
+                                        //开始检测
+                                        var fileImages = document.getElementById("inputMultifile").files;
+                                        //检测照片数量
+                                        console.log("fileImagesLength=");
+                                        console.log(fileImages.length);
+                                        if (fileImages.length == 0) {
+                                            document.getElementById("idInputPhotoErrorDialog").value = "没有选择照片";
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "100"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return true;
+                                        }
+                                        if (fileImages.length < MinImgLength) {
+                                            console.log("至少上传" + MinImgLength + "张照片"); //过滤特殊情况
+                                            document.getElementById("idInputPhotoErrorDialog").value = "至少上传" + MinImgLength + "张照片";
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        }
+                                        if (fileImages.length > MaxImgLength) {
+                                            console.log("一次上传不得超过" + MaxImgLength + "张照片"); //过滤特殊情况
+                                            document.getElementById("idInputPhotoErrorDialog").value = "一次上传不得超过" + MaxImgLength + "张照片";
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        }
+                                        //检测照片属性
+                                        var timesImgReader = 0;
+                                        for (var i = 0; i < fileImages.length; i++) {
+                                            file = fileImages[i];
+                                            //检测照片格式
+                                            if (!/image\/\w+/.test(file.type)) {
+                                                document.getElementById("idInputPhotoErrorDialog").value = "照片格式错误，必须是.gif,jpeg,jpg,png中的一种";
+                                                $("#idInputPhotoErrorDialog").trigger('input');
+                                                document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                $("#inputPhotoErrorType").trigger('input');
+                                                return false;
+                                            }
+                                            //检测照片大小（占用空间）
+                                            console.log("file.size");
+                                            console.log(file.size / 1024 / 1024);
+                                            if (file.size > 0) {
+                                                if (file.size > MaxImgSize) {
+                                                    document.getElementById("idInputPhotoErrorDialog").value = "请勿选择过大的照片";
+                                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                    $("#inputPhotoErrorType").trigger('input');
+                                                    return false;
+                                                } else if (file.size < MinImgSize) { //不得小于指定值
+                                                    document.getElementById("idInputPhotoErrorDialog").value = "请勿选择过小的照片";
+                                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                    $("#inputPhotoErrorType").trigger('input');
+                                                    return false;
+                                                }
+                                            }
+                                            //判断照片像素大小
+                                            var reader = new FileReader();
+                                            var img = new Image();
+                                            reader.onloadend = function(evt) {
+                                                console.log('timesImgReader');
+                                                console.log(timesImgReader);
+                                                console.log('fileImages.length');
+                                                console.log(fileImages.length);
+                                                console.log('reader.readAsDataURL');
+                                                img.src = this.result;
+                                                var width = img.width;
+                                                console.log("img.width");
+                                                console.log(img.width);
+                                                var height = img.height;
+                                                console.log("img.height");
+                                                console.log(img.height);
+
+                                                if (img.width < MinImgWidth || img.height < MinImgHeight) {
+                                                    document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过小! 为保证视觉质量，该照片大小至少为" + MinImgWidth + "×" + MinImgHeight;
+                                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                    $("#inputPhotoErrorType").trigger('input');
+                                                    return false;
+                                                }
+                                                if (img.width / img.height < MinImgRate) {
+                                                    document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过高! 为保证视觉质量，场地照片宽度：高度比例至少为" + MinImgRate;
+                                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                    $("#inputPhotoErrorType").trigger('input');
+                                                    return false;
+                                                } else if (img.width / img.height > MaxImgRate) {
+                                                    document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过宽! 为保证视觉质量，场地照片宽度：高度比例不超过" + MaxImgRate;
+                                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                                    $("#inputPhotoErrorType").trigger('input');
+                                                    return false;
+
+                                                }
+                                                timesImgReader++;
+                                                if (timesImgReader == fileImages.length) {
+                                                    console.log('成功');
+                                                    console.log('i');
+                                                    console.log(i);
+                                                    readAsDataURL('inputMultifile', 'resultAlbum', 'inputPhotoErrorType');
+                                                    return true;
+                                                }
+                                                return true;
+                                            }
+                                            reader.readAsDataURL(file);
+                                        }
+                                        //./循环结束
+                                        //输出选择文件个数
+                                        document.getElementById("lengthPhotoInputId").value = fileImages.length;
+                                        $("#lengthPhotoInputId").trigger('input');
+                                    });
+                                });
+                                </script>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group" style="display:none">
+                                    <div class="col-sm-2">
+                                        <label class="form-control-label">照片标题</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="icon">&#xe60c</i>
+                                        <textarea class="form-control iconInput" id="textPhotoName" rows="5" cols="20" placeholder="请输入照片标题，每个标题一行。&#10如：&#10大厅&#10院子&#10" style="margin:0;"></textarea>
+                                    </div>
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <!--    -->
+                            <!--    -->
+                            <!--    -->
+                            <div hidden>
+                                <div>函数测试区域</div>
+                                <a class="btn btn-primary" onclick='getAlbumName_admin_space_html("inputPhotoTitle",document.getElementById("inputMultifile").files.length);'>获得照片名</a>
+                            </div>
+                            <script type="text/javascript">
+                            function updateSpace() {
+                                var strSpaceId = getPar("spaceId");
+                                //更新场地表单
+                                var strForm = $('#updateSpaceForm').serialize();
+                                strForm += "&priceList="; //获取价格列表
+                                for (var i = 0; i < 7; i++) {
+                                    var strI = i.toString();
+                                    var id = "idDateType" + strI;
+                                    var strAdd = document.getElementById(id).value;
+                                    if (strAdd != "") {
+                                        strForm += strAdd;
+                                        if (i < 6) strForm += ",";
+                                    }
+                                }
+                                strForm += "&spaceId=";
+                                strForm += strSpaceId; //设置场地ID
+                                var ajaxReturn = ajaxPar("/dreamSpace/spaceInfo/updateSpace.html", "post", strForm, false);
+                                console.log("ajaxReturn");
+                                console.log(ajaxReturn);
+                                //获得相册文件列表
+                                var fileImages = document.getElementById("inputMultifile").files;
+                                console.log("fileImagesLength:" + fileImages.length);
+                                if (fileImages.length == 0) {
+                                    console.log("没有选中照片"); //过滤特殊情况
+                                } else if (fileImages.length > 30) {
+                                    console.log("一次上传不得超过30张照片"); //过滤特殊情况
+                                    return false;
+                                }
+                                //获得相册名称数组
+                                var arrayAlbumName = getAlbumName_admin_space_html('inputPhotoTitle', fileImages.length);
+                                //var arrayAlbumName = string2array(document.getElementById("textPhotoName").value, '\n');
+                                //更新相册
+                                console.log("fileImagesLength:" + fileImages.length);
+                                for (var i = 0; i < fileImages.length; i++) { //file对象为用户选择的某一个文件 
+                                    console.log("第" + i + "个文件名为：" + fileImages[i].name); //此时取出这个文件进行处理，这里只是显示文件名
+                                    var thisFormData = new FormData(); //准备参数
+                                    thisFormData.append("file", fileImages[i]);
+                                    if (arrayAlbumName[i] != "" && arrayAlbumName[i] != undefined) { //照片标题参数
+                                        thisFormData.append("photoName", arrayAlbumName[i]);
+                                    } else {
+                                        thisFormData.append("photoName", "照片");
+                                    }
+                                    console.log("strSpaceId");
+                                    console.log(strSpaceId);
+                                    thisFormData.append("spaceId", strSpaceId);
+                                    var ajaxReturn = ajaxFormData("post", "/dreamSpace/space/uploadPhoto.html", thisFormData, false); //上传本张照片
+                                    console.log("ajaxReturn");
+                                    console.log(ajaxReturn);
+                                }
+                                if (ajaxReturn.message == "success") {
+                                    console.log('ajaxReturn.message=="success"');
+                                    window.location.reload(true);
+                                }
+                            }
+
+                            function getAlbumName_admin_space_html(inputTitleid, titleLength) {
+                                var arr = new Array();
+                                for (var i = 0; i < titleLength; i++) {
+                                    var thisId = inputTitleid + i;
+                                    console.log("thisId");
+                                    console.log(thisId);
+                                    console.log('document.getElementById("thisId ").value');
+                                    console.log(document.getElementById(thisId).value);
+                                    var strTemp = document.getElementById(thisId).value;
+                                    if (strTemp == undefined) {
+                                        strTemp = "";
+                                    }
+                                    arr.push(strTemp);
+                                }
+                                console.log("arr");
+                                console.log(arr);
+                                return arr;
+                            }
+                            </script>
+                            <!--    -->
+                            <!--    -->
+                            <!--    -->
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-primary col-sm-12" type="submit" ng-show="!submitted">保存修改</button>
+                                    <button class="btn btn-primary col-sm-12" type="submit" ng-show="submitted">重新发布</button>
+                                </div>
+                            </div>
+                            <!--    -->
+                            <!--    -->
+                            <!--    -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--/.发布场地-->
+        </div>
+    </div>
+    <!--      -->
+    <!--      -->
+    <!--      -->
+    <!-- 通用   -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.3.3.6.min.js"></script>
+    <!-- js：AngularJS -->
+    <script src="/js/angular.min.1.5.8.js"></script>
+    <!-- 专用   -->
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <!-- 自定义 -->
+    <!-- admin放在morris-data之前才能执行 -->
+    <script src="js/admin.js"></script>
+    <!--      -->
+    <!--      -->
+    <!--      -->
+    <script>
+    var appSpace_Html = angular.module("SpaceAPP", []);
+    appSpace_Html.factory('spaceinfoService', ['$http', '$q', function($http, $q) {
+        return {
+            query: function() {
+                var defer = $q.defer(); //声明延后执行
+                $http({
+                    method: 'GET',
+                    url: '/dreamSpace/space/hotSpace.html'
+                }).
+                success(function(data, status, headers, config) {
+                    defer.resolve(data); //声明执行成功
+                    console.log('UserInfoService success');
+                }).
+                error(function(data, status, headers, config) {
+                    defer.reject(); //声明执行失败
+                });
+
+                return defer.promise; //返回承诺，返回获取数据的API
+            }
+        }
+    }]);
+    appSpace_Html.directive("changedistrict", function() {
+        return function(scope, element, attr) {
+            element.on("click", function() {
+                console.log("changedistrict");
+                console.log("scope.thisSelectCityId");
+                console.log(scope.thisSelectCityId);
+                scope.$apply();
+            });
+        };
+    });
+    appSpace_Html.controller("spaceinfoController", function spaceinfoController($scope, $http, $rootScope, $q, spaceinfoService) {
+        //变量初始化
+        $scope.thisSelectCityId;
+        $scope.thisSelectDistrictId;
+        $scope.thisSelectTypeName; //场地类型        
+        /*$scope.deletePhotoSuccessFunc = function() {
+            console.log("angular deletePhotoSuccess");
+            //场地相册
+            var url = "/dreamSpace/space/space_details.html?spaceId=" + getPar("spaceId");
+            console.log('getPar("spaceId")');
+            console.log(getPar("spaceId"));
+            $http.get(url).success(function(response) {
+                //场地相册
+                $scope.photos = response.photoSpace;
+                console.log("$scope.photos");
+                console.log($scope.photos);
+            });
+        };*/
+        //操作信息
+        $scope.thisVisitId = getCookie("managerId");
+        //场地信息
+        var url = "/dreamSpace/spaceInfo/queryById.html?spaceId=" + getPar("spaceId");
+        //console.log(url);
+        $http.get(url).success(function(response) {
+            //console.log(response);
+            $scope.spaceinfo = response.spaceInfo;
+            $scope.pricelists = response.priceList;
+            //场地政策
+            $scope.policylists = response.policyList;
+            //判断场地政策
+            $scope.isSpacePolicy = function(policyName) {
+                for (var i = 0; i < $scope.policylists.length; i++) {
+                    if (policyName == $scope.policylists[i].policy) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            //开始： 场地政策初始化
+            var inputSpacePolicyValue = "";
+            for (var i = 0; i < $scope.policylists.length; i++) {
+                inputSpacePolicyValue += $scope.policylists[i].policy;
+                if (i != $scope.policylists.length - 1) {
+                    inputSpacePolicyValue += ',';
+                }
+            }
+            console.log(inputSpacePolicyValue);
+            document.getElementById("inputSpacePolicy").value = inputSpacePolicyValue;
+            //结束： 场地政策初始化
+            //取消政策
+            $scope.controller.reservationPolicy = $scope.spaceinfo.reservationPolicy;
+            //开始： 城市初始化
+            console.log('$scope.spaceinfo.cityId');
+            console.log($scope.spaceinfo.cityId);
+            $scope.thisSelectCityId = $scope.spaceinfo.cityId;
+            console.log('$scope.thisSelectCityId');
+            console.log($scope.thisSelectCityId);
+            //结束： 城市初始化
+            //开始： 区域初始化
+            console.log('$scope.spaceinfo.districtId');
+            console.log($scope.spaceinfo.districtId);
+            $scope.thisSelectDistrictId = $scope.spaceinfo.districtId;
+            console.log('$scope.thisSelectDistrictId');
+            console.log($scope.thisSelectDistrictId);
+            //结束： 区域初始化
+            //开始： 类型初始化
+            console.log('$scope.spaceinfo.spaceTypeName');
+            console.log($scope.spaceinfo.spaceTypeName);
+            $scope.thisSelectTypeName = $scope.spaceinfo.spaceTypeName;
+            console.log('$scope.thisSelectTypeName');
+            console.log($scope.thisSelectTypeName);
+            //结束： 类型初始化
+        });
+        //场地详情
+        var url = "/dreamSpace/space/space_details.html?spaceId=" + getPar("spaceId");
+        console.log('getPar("spaceId")');
+        console.log(getPar("spaceId"));
+        $http.get(url).success(function(response) {
+            console.log("response");
+            console.log(response);
+            //场地相册
+            $scope.photos = response.photoSpace;
+            console.log("response.photoSpace");
+            console.log(response.photoSpace);
+            console.log("$scope.photos.length");
+            console.log($scope.photos.length);
+
+            if ($scope.photos.length != 0 && $scope.photos.length != undefined) {
+                $scope.photoslength = "hasPhoto";
+            } else $scope.photoslength = "noPhoto";
+
+            $scope.spacedetail = response.spaceDetail; //场地信息
+            console.log('$scope.spacedetail');
+            console.log($scope.spacedetail);
+            //设施
+            $scope.spacefacilitys = response.spaceFacilityInfo; //本场地设施
+            console.log('$scope.spacefacilitys');
+            console.log($scope.spacefacilitys);
+            //检查场地设施
+            $scope.isSpaceFacility = function(facilityId) {
+                for (var i = 0; i < $scope.spacefacilitys.length; i++) {
+                    if (facilityId == $scope.spacefacilitys[i].facilityId) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            //开始：场地设施初始化
+            var inputSpaceFacilityValue = "";
+            for (var i = 0; i < $scope.spacefacilitys.length; i++) {
+                inputSpaceFacilityValue += $scope.spacefacilitys[i].facilityId;
+                if (i != $scope.spacefacilitys.length - 1) {
+                    inputSpaceFacilityValue += ',';
+                }
+            }
+            console.log(inputSpaceFacilityValue);
+            document.getElementById("inputFacilityInfoId").value = inputSpaceFacilityValue;
+            //结束：场地设施初始化
+            $scope.hostInfo = response.hostInfo; //主人信息
+            $scope.morespaces = response.moreSpace; //更多场地
+            $scope.asspaces = response.as_Space; //相似场地
+            $scope.spacepricelist = response.priceList; //场地价格列表
+            displayMapAddress('inputSpaceDetailAddress', 'inputSpaceName'); //场地地图初始化
+        });
+        //城市
+        var url = "/dreamSpace/cityInfo/cityInfo.html";
+        $http.get(url).success(function(response) {
+            $scope.citys = response.cityInfos;
+        });
+        //区域
+        var url = "/dreamSpace/standard/districtInfo.html";
+        //console.log(url);
+        $http.get(url).success(function(response) {
+            $scope.districts = response.districtInfo;
+            console.log("response.districtInfo");
+            console.log(response.districtInfo);
+        });
+        //场地类型
+        var url = "/dreamSpace/spaceTypeInfo/spaceTypeInfo.html";
+        //console.log(url);
+        $http.get(url).success(function(response) {
+            //console.log(response);
+            $scope.spacetypes = response.spaceTypeInfos;
+            //console.log(response[0].spaceTypeId);
+            /*var valueElement = "";
+            for (var i = 0; i < $scope.spacetypes.length; i++) {
+                if ($scope.spacetypes[i].spaceTypeName == $scope.spaceinfo.spaceTypeName) {
+                    valueElement += $scope.spacetypes[i].spaceTypeId;
+                    if (i != $scope.spacetypes.length - 1) valueElement += ",";
+                }
+            }
+            document.getElementById(inputSpaceTypeId).value = "valueElement";*/
+        });
+        //
+        //设施
+        var url = "/dreamSpace/facilityInfo/facilityInfo.html";
+        $http.get(url).success(function(response) {
+            $scope.facilityinfos = response.facilityInfos;
+        });
+        //设施选中
+        /*
+        var tempfacilityChecked = new Array();
+        for (var i = 0; i < $scope.facilityinfos.length; i++) {
+            var isCheck = false;
+            for (var j = 0; j < $scope.spacefacilitys.length; j++) {
+                if ($scope.facilityinfos[i].facilityId == $scope.spacefacilitys[j].facilityInfo) {
+                    isCheck = true;
+                    break;
+                }
+            }
+            tempfacilityChecked.push(isCheck);
+        }
+        console.log("facilityChecked：" + facilityChecked);
+        $scope.facilityChecked = tempfacilityChecked;
+        */
+        //
+        //价格
+        var url = "json/listPriceType.json";
+        $http.get(url).success(function(response) {
+            $scope.listpricetypes = response;
+        });
+        //人数范围
+        var url = "json/spaceNum.json";
+        $http.get(url).success(function(response) {
+            $scope.guestnumbers = response;
+        });
+        //
+        //console.log("$rootScope.allSpaceFacility：" + $rootScope.allSpaceFacility);
+        //console.log("spaceFacilityInfo.allSpaceFacility：" + spaceFacilityInfo.allSpaceFacility);
+        //测试
+        /*var promise = spaceinfoService.query(); //同步调用，获取承诺接口
+        promise.then(function(data) {
+            $scope.cool = data; //调用承诺接口resolove()
+            console.log('MainCtrl ...');
+        }, function(data) {
+            $scope.cool = {
+                error: '数据不存在。。。'
+            }; //调用承诺接口reject();
+        });*/
+        //表单检测初始化
+        $scope.controller.inputPhotoErrorType = "100";
+        $scope.inputPhotoErrorDialog = "没有选择照片";
+        //提交表单 
+        $scope.submitted = false;
+        $scope.submit = function() {
+            console.log("$scope.submitted");
+            console.log($scope.submitted);
+            if (!$scope.adminSpaceForm.$invalid) {
+                console.log("表单验证正确");
+                updateSpace();
+            } else {
+                console.log("表单验证有错");
+            }
+            $scope.submitted = true;
+        }
+    });
+    </script>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</body>
+
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>网站管理系统</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images\www.favicon.ico" media="screen" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--  通用  -->
+    <!-- Bootstrap Core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--  专用  -->
+    <!-- MetisMenu CSS -->
+    <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- DataTables CSS -->
+    <link href="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- DataTables Responsive CSS
+    <link href="bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet"> -->
+    <!-- 自定义 -->
+    <link href="/css/global.css" rel="stylesheet" type="text/css" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</head>
+
+<body ng-app="">
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div id="wrapper">
+        <!--    -->
+        <!--    -->
+        <!--    -->
+        <div ng-include="'includes/nav.html'"></div>
+        <!--    -->
+        <!--    -->
+        <!--    -->
+        <div id="page-wrapper">
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">成员管理</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!--      -->
+            <!--      -->
+            <!--      -->
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>全部成员</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover dataTables" ng-controller="adminlistController">
+                                    <thead>
+                                        <tr class="odd gradeX">
+                                            <th hidden>ID</th>
+                                            <th>登录账号</th>
+                                            <th>真实姓名</th>
+                                            <th hidden>身份</th>
+                                            <th>权限组</th>
+                                            <th hidden>账号状态</th>
+                                            <th>联系电话</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="managerinfo in managerinfos">
+                                            <td ng-bind="managerinfo.managerId" hidden>117849371497238479</td>
+                                            <td ng-bind="managerinfo.managerName">huameili</td>
+                                            <td ng-bind="managerinfo.managerTrueName">李华梅</td>
+                                            <td hidden>
+                                                <span ng-if="managerinfo.managerIntroduce==''" ng-bind="'其他管理员'"></span>
+                                                <span ng-if="managerinfo.managerIntroduce!=''" ng-bind="managerinfo.managerIntroduce">管理员身份</span>
+                                            </td>
+                                            <td>
+                                                <span ng-bind="managerinfo.roleName">管理员组</span>
+                                            </td>
+                                            <td hidden>
+                                                <span ng-if="managerinfo.status==0">有效</span>
+                                                <span ng-if="managerinfo.status==1">冻结</span>
+                                            </td>
+                                            <td ng-bind="managerinfo.phone">13888888888</td>
+                                            <td>
+                                                <a href="administrator.html?managerName={{managerinfo.managerName}}" type="submit" class="btn btn-primary">修改</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <form class="form-horizontal" id="formAddManager" role="form" ng-controller="adminlistController">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-4">
+                            <center>
+                                <h4>新建管理员</h4>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label>登录名</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input placeholder="名称" class="form-control" type="text" name="managerName"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label>真实姓名</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input placeholder="真实姓名" class="form-control" type="text" name="managerTrueName" />
+                        </div>
+                    </div>
+                    <!--<div class="form-group col-sm-3">
+                        <label>ID</label>
+                        <input placeholder="管理员id" class="form-control" type="text" name="managerId" />
+                    </div>-->
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label>密码</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input placeholder="密码" class="form-control" type="text" name="managerPass" />
+                        </div>
+                    </div>
+                    <!--<div class="form-group col-sm-3">
+                        <label>密码</label>
+                        <input placeholder="密码" class="form-control" type="text" name="managerPassword" />
+                    </div>-->
+                    <!--<div class="form-group col-sm-3">
+                        <label>确认密码</label>
+                        <input placeholder="确认密码" class="form-control" type="text" name="managerPasswordConfirm" />
+                    </div>-->
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label>组</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="roleId">
+                                <option value="0002">运营组</option>
+                                <option value="0001">技术组</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <div class="col-sm-4">
+                            <label>管理员介绍</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="managerIntroduce">
+                                <option value="操作管理员">操作管理员</option>
+                                <option value="超级管理员">超级管理员</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <div class="col-sm-4">
+                            <label>管理员状态（隐藏不修改）</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input placeholder="状态" class="form-control" type="text" name="status" value="0" />
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <div class="col-sm-4">
+                            <label>操作管理员Id 隐藏</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="form-control" placeholder="操作管理员名" type="text" name="visitId" ng-value="thisvisitId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-4">
+                            <a href="javascript:void(0);" class="btn btn-primary" type="submit" onclick="ajaxFormJson('get','#formAddManager','','/dreamSpace/manager/addManager.html');window.location.reload(true);">新建管理员</a>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <script>
+    function adminlistController($scope, $http) {
+        var thisManagerId = getCookie("managerId");
+        console.log("thisManagerId：" + thisManagerId);
+        $scope.thisvisitId = thisManagerId;
+        var url = "/dreamSpace/manager/queryManager.html";
+        //alert(url);
+        $http.get(url).success(function(response) {
+            //alert(response);
+            $scope.managerinfos = response.managerInfo;
+            //alert($scope.managerinfos[0].managerIntroduce);
+        });
+    }
+    </script>
+    <!--      -->
+    <!--      -->
+    <!--      -->
+    <!--  通用    -->
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.3.3.6.min.js"></script>
+    <!-- js：AngularJS -->
+    <script src="js/angular.min.1.2.9.js"></script>
+    <!--  专用    -->
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <!-- 自定义 -->
+    <!-- admin放在morris-data之前才能执行 -->
+    <script src="js/admin.js"></script>
+    <!--      -->
+    <!--      -->
+    <!--      -->
+    <script>
+    $(document).ready(function() {
+        $('.dataTables').DataTable({
+            responsive: true,
+            language: {
+                "oAria": {
+                    "sSortAscending": ": 升序排列",
+                    "sSortDescending": ": 降序排列"
+                },
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sLast": "末页",
+                    "sNext": "下页",
+                    "sPrevious": "上页"
+                },
+                "sEmptyTable": "没有相关记录",
+                "sInfo": "第 _START_ 到 _END_ 条记录，共 _TOTAL_ 条",
+                "sInfoEmpty": "第 0 到 0 条记录，共 0 条",
+                "sInfoFiltered": "(从 _MAX_ 条记录中检索)",
+                "sInfoPostFix": "",
+                "sDecimal": "",
+                "sThousands": ",",
+                "sLengthMenu": "每页显示条数: _MENU_",
+                "sLoadingRecords": "正在载入...",
+                "sProcessing": "正在载入...",
+                "sSearch": "搜索:",
+                "sSearchPlaceholder": "",
+                "sUrl": "",
+                "sZeroRecords": "没有相关记录"
+            }
+        });
+    });
+    </script>
+    <!-- js:自定义 -->
+    <!--<script src="../js/globalAdmin.js"></script>-->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</body>
+
+</html>

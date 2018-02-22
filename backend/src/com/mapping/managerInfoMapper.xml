@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 城市信息数据层 -->
+<mapper namespace="com.service.IManagerInfoService">
+
+	<!-- 查询返回结果集 -->
+	<resultMap type="ManagerInfo" id="managerInfoList">
+		<id column="managerId" property="managerId" />
+		<result column="managerName" property="managerName" />
+		<result column="managerTrueName" property="managerTrueName" />
+		<result column="managerPass" property="managerPass" />
+		<result column="phone" property="phone" />
+		<result column="status" property="status" />
+		<result column="managerIntroduce" property="managerIntroduce" />
+		<result column="roleName" property="roleName" />
+	</resultMap>
+	<!-- 查询返回结果集 -->
+
+	<!-- 管理员登录 -->
+	<select id="isLogin" parameterType="string" resultType="ManagerInfo">
+		select
+		managerId,managerName from managerInfo where
+		managerName=#{managerName}
+		and managerPass=#{managerPass} and status=0
+	</select>
+	<!-- 管理员登录 -->
+
+	<!-- 查询管理员信息 -->
+	<select id="queryManager" resultMap="managerInfoList">
+		select
+		m.managerId,m.managerName,m.managerTrueName,m.phone,m.managerIntroduce,m.status,r.roleName
+		from managerInfo m INNER JOIN managerRoleInfo mR on
+		m.managerId=mR.managerId INNER JOIN roleInfo r on r.roleId=mr.roleId
+	</select>
+	<!-- 查询管理员信息 -->
+
+	<!-- 添加管理员 -->
+	<insert id="addManager" parameterType="ManagerInfo">
+		insert
+		managerInfo(managerId,managerName,managerTrueName,managerPass,status)
+		values(#{managerId},#{managerName},#{managerTrueName},#{managerPass},0)
+	</insert>
+	<!-- 添加管理员 -->
+
+	<!-- 添加管理员角色 -->
+	<insert id="addRole" parameterType="string">
+		insert
+		managerRoleInfo(mRoleId,managerId,roleId)
+		values(#{mRoleId},#{managerId},#{roleId})
+	</insert>
+	<!-- 添加管理员角色 -->
+
+	<!-- 删除管理员 -->
+	<delete id="removeManager" parameterType="string">
+		delete from managerInfo
+		where managerId=#{managerId}
+	</delete>
+	<!-- 删除管理员 -->
+
+	<!-- 查询记录数 -->
+	<select id="queryCount" resultType="int">
+		select count(*) from
+		managerInfo
+	</select>
+	<!-- 查询记录数 -->
+
+	<!-- 根据managerName查询 -->
+	<select id="queryByName" parameterType="string" resultType="ManagerInfo">
+		select
+		m.managerId,m.managerName,m.managerTrueName,m.managerPass,m.phone,m.managerIntroduce,m.status,r.roleName
+		from managerInfo m INNER JOIN managerRoleInfo mR on
+		m.managerId=mR.managerId INNER JOIN roleInfo r on r.roleId=mr.roleId
+		and m.managerName=#{managerName}
+	</select>
+	<!-- 根据Id查询 -->
+
+	<!-- 修改管理员 -->
+	<update id="updateManager" parameterType="ManagerInfo">
+		update managerInfo m
+		INNER JOIN managerRoleinfo mR on m.managerId=mR.managerId set
+		m.managerName=#{managerName},m.managerTrueName=#{managerTrueName},m.managerPass=#{managerPass},m.phone=#{phone},m.managerIntroduce=#{managerIntroduce},m.status=#{status},mR.roleId=#{roleId}
+		where m.managerId=#{managerId}
+	</update>
+	<!-- 修改管理员 -->
+
+	<!-- 个人设置—— 修改管理员 -->
+	<update id="editManager" parameterType="ManagerInfo">
+		update managerInfo set
+		managerName=#{managerName},managerTrueName=#{managerTrueName},managerPass=#{managerPass},phone=#{phone},m.managerIntroduce=#{managerIntroduce},status=#{status}
+		where managerId=#{managerId}
+	</update>
+	<!-- 个人设置 ——修改管理员 -->
+
+	<!-- 查询管理员是否存在 -->
+	<select id="isCheck" parameterType="string" resultType="ManagerInfo">
+		select
+		managerId,managerName from managerInfo where
+		managerName=#{managerName}
+	</select>
+	<!-- 查询管理员是否存在 -->
+
+</mapper>

@@ -1,0 +1,16 @@
+element.style { margin-bottom: 30px; }
+.page .container { width: 1100px; position: relative; margin: 0 auto; }
+.article { line-height: 24px; color: #333; font-size: 16px; padding-bottom: 40px; }
+user agent stylesheet
+table { display: table; border-collapse: separate; border-spacing: 2px; border-color: grey; }
+tbody { display: table-row-group; vertical-align: middle; border-color: inherit; }
+tr { display: table-row; vertical-align: inherit; border-color: inherit; }
+.jd-main { width: 50%; vertical-align: top; font-size: 14px; padding-right: 40px; }
+.jd-main .jd-title { color: #F4616D; font-size: 22px; line-height: 30px; display: block; font-weight: 700; padding-top: 35px; }
+.jd-main .attributes { width: 100%; border-bottom: 1px #ccc solid; height: 40px; padding: 10px 0; margin-bottom: 15px; }
+.jd-main .attributes span { width: 25%; display: block; float: left; }
+.jd-main .attributes span .iconfont { color: #ccc; margin-right: 8px; }
+.iconfont { font-family: iconfont !important; font-size: 16px; }
+.sub-jd-title { display: block; font-size: 14px; color: #000; padding: 5px 5px 10px; position: relative; }
+.jd-main p { padding-left: 6px; margin: 0; }
+p { display: block; -webkit-margin-before: 1em; -webkit-margin-after: 1em; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 角色信息数据层 -->
+<mapper namespace="com.service.IRoleInfoService">
+
+	<!-- 角色信息列表 -->
+	<resultMap type="RoleInfo" id="roleInfoList">
+		<id column="roleId" property="roleId" />
+		<result column="roleName" property="roleName" />
+		<result column="roleIntroduce" property="roleIntroduce" />
+	</resultMap>
+	<!-- 角色信息列表 -->
+
+	<!-- 添加角色 -->
+	<insert id="addRole" parameterType="RoleInfo">
+		insert
+		roleInfo(roleId,roleName,roleIntroduce)
+		values(#{roleId},#{roleName},#{roleIntroduce})
+	</insert>
+	<!-- 添加角色 -->
+
+	<!-- 查询角色 -->
+	<select id="queryRole" resultMap="roleInfoList">
+		select
+		roleId,roleName,roleIntroduce from
+		roleInfo
+	</select>
+	<!-- 查询角色 -->
+
+	<!-- 删除角色 -->
+	<delete id="removeRole" parameterType="string">
+		delete from roleInfo where
+		roleId=#{roleId}
+	</delete>
+	<!-- 删除角色 -->
+</mapper>

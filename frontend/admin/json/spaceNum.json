@@ -1,0 +1,29 @@
+[{
+    "idGuestnumber": "below30",
+    "nameGuestnumber": "30",
+    "textGuestnumber": "30人以下"
+}, {
+    "idGuestnumber": "31to50",
+    "nameGuestnumber": "31-50",
+    "textGuestnumber": "31-50人"
+}, {
+    "idGuestnumber": "51to100",
+    "nameGuestnumber": "51-100",
+    "textGuestnumber": "51-100人"
+}, {
+    "idGuestnumber": "101to200",
+    "nameGuestnumber": "101-200",
+    "textGuestnumber": "101-200人"
+}, {
+    "idGuestnumber": "201to300",
+    "nameGuestnumber": "201-300",
+    "textGuestnumber": "201-300人"
+}, {
+    "idGuestnumber": "301to500",
+    "nameGuestnumber": "301-500",
+    "textGuestnumber": "301-500人"
+}, {
+    "idGuestnumber": "above500",
+    "nameGuestnumber": "500",
+    "textGuestnumber": "500人以上"
+}]

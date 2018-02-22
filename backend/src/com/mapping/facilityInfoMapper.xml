@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 设备信息数据层 -->
+<mapper namespace="com.service.IFacilityInfoService">
+
+	<!-- 设备信息列表 -->
+	<resultMap type="FacilityInfo" id="facilityInfoList">
+		<id column="facilityId" property="facilityId" />
+		<result column="facilityName" property="facilityName" />
+	</resultMap>
+	<!-- 设备信息列表 -->
+
+	<!-- 查询设备 -->
+	<select id="queryFacility" resultMap="facilityInfoList">
+		select
+		facilityId,facilityName from
+		facilityInfo
+	</select>
+	<!-- 查询设备 -->
+
+	<!-- 添加设施 -->
+	<insert id="addFacility" parameterType="FacilityInfo">
+		insert
+		facilityInfo(facilityId,facilityName)
+		values(#{facilityId},#{facilityName})
+	</insert>
+	<!-- 添加设施 -->
+	
+	<!-- 批量添加设施 -->
+	<insert id="insertFacility" parameterType="List">
+
+		<if test="list != null and list.size>0">
+			INSERT facilityInfo(facilityId,facilityName) VALUES
+			<foreach collection="list" item="item" index="index"
+				separator=",">
+				(#{item.facilityId},#{item.facilityName})
+			</foreach>
+		</if>
+
+	</insert>
+	<!-- 批量添加设施 -->
+
+</mapper>

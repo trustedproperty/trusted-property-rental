@@ -1,0 +1,22 @@
+[{
+    "idDateType": "idDateType0",
+    "nameDateType": "星期一"
+}, {
+    "idDateType": "idDateType1",
+    "nameDateType": "星期二"
+}, {
+    "idDateType": "idDateType2",
+    "nameDateType": "星期三"
+}, {
+    "idDateType": "idDateType3",
+    "nameDateType": "星期四"
+}, {
+    "idDateType": "idDateType4",
+    "nameDateType": "星期五"
+}, {
+    "idDateType": "idDateType5",
+    "nameDateType": "星期六"
+}, {
+    "idDateType": "idDateType6",
+    "nameDateType": "星期日"
+}]

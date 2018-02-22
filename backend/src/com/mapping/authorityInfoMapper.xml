@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 权限信息数据层 -->
+<mapper namespace="com.service.IAuthorityInfoService">
+
+	<!-- 权限信息列表 -->
+	<resultMap type="AuthorityInfo" id="authorityInfoList">
+		<id column="authorityId" property="authorityId" />
+		<result column="authorityName" property="authorityName" />
+		<result column="authorityUrl" property="authorityUrl" />
+		<result column="authorityImage" property="authorityImage" />
+		<result column="superiorId" property="superiorId" />
+	</resultMap>
+	<!-- 权限信息列表 -->
+
+	<!-- 查询权限 -->
+	<select id="queryAuthority" resultMap="authorityInfoList">
+		select
+		a.authorityName,a.authorityUrl from authorityInfo a INNER JOIN
+		roleauthorityInfo aR on a.authorityId=aR.authorityId INNER JOIN
+		managerroleInfo m on m.roleId=ar.roleId INNER JOIN roleInfo r on
+		r.roleId=ar.roleId and a.superiorId=0 and m.managerId=#{managerId}
+	</select>
+	<!-- 查询权限 -->
+
+	<!-- 查询操作权限 -->
+	<select id="checkAuthority" parameterType="string" resultType="int">
+		select distinct(a.authorityId),a.authorityName,a.authorityUrl from
+		authorityInfo a INNER JOIN roleAuthorityinfo r on
+		r.authorityId=a.authorityId INNER JOIN roleInfo role on
+		role.roleId=r.roleId INNER JOIN managerRoleinfo m on
+		m.roleId=role.roleId and m.managerId=#{managerId} and
+		a.authorityName=#{authorityName}
+	</select>
+	<!-- 查询操作权限 -->
+</mapper>

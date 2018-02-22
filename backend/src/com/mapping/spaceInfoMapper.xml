@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 推荐场地信息数据层 -->
+<mapper namespace="com.service.ISpaceInfoService">
+
+	<!-- 1，size:表示缓存cache中能容纳的最大元素数。默认是1024； 2，flushInterval:定义缓存刷新周期，以毫秒计； 
+		3，eviction:定义缓存的移除机制；默认是LRU(least recently userd，最近最少使用),还有FIFO(first in 
+		first out，先进先出) 4，readOnly:默认值是false，假如是true的话，缓存只能读。 -->
+	<cache size="1024" flushInterval="60000" eviction="LRU" readOnly="false" />
+	<!-- 场地信息列表 -->
+	<resultMap type="SpaceInfo" id="spaceInfoList">
+		<id column="spaceId" property="spaceId" />
+		<result column="cityId" property="cityId" />
+		<result column="districtId" property="districtId" />
+		<result column="spaceTypeId" property="spaceTypeId" />
+		<result column="spaceName" property="spaceName" />
+		<result column="legalName" property="legalName" />
+		<result column="spacePrice" property="spacePrice" />
+		<result column="priceList" property="priceList" />
+		<result column="spaceNum" property="spaceNum" />
+		<result column="spaceArea" property="spaceArea" />
+		<result column="isAvailable" property="isAvailable" />
+		<result column="introduce" property="introduce" />
+		<result column="spacePolicy" property="spacePolicy" />
+		<result column="reservationPolicy" property="reservationPolicy" />
+		<result column="spacePhoto" property="spacePhoto" />
+		<result column="spaceAddress" property="spaceAddress" />
+		<result column="spaceDetailAddress" property="spaceDetailAddress" />
+		<result column="position" property="position" />
+		<result column="hotSpace" property="hotSpace" />
+		<result column="hostId" property="hostId" />
+		<result column="spaceStatus" property="spaceStatus" />
+		<result column="trueName" property="trueName" />
+		<result column="spaceTypeName" property="spaceTypeName" />
+		<result column="cityName" property="cityName" />
+		<association property="spaceTypeInfo" javaType="SpaceTypeInfo">
+			<id column="spaceTypeId" property="spaceTypeId" />
+		</association>
+	</resultMap>
+	<!-- 场地信息列表 -->
+
+	<!-- 查询热门场地 -->
+	<select id="hotSpace" resultMap="spaceInfoList">
+		select
+		spaceId,spaceName,spaceAddress,spaceDetailAddress,spaceNum,hostId,spaceTypeId,hotSpace
+		from
+		spaceInfo where spaceStatus=0 order by hotSpace desc limit 0,6
+	</select>
+	<!-- 查询热门场地 -->
+
+	<!-- 查询场地详情 -->
+	<select id="queryDetail" parameterType="string" resultType="SpaceInfo">
+		select
+		spaceId,districtId,spaceName,legalName,spaceAddress,spaceDetailAddress,spaceNum,introduce,spaceArea,spacePrice,priceList,reservationPolicy,spacePolicy,position
+		from spaceInfo where spaceId=#{spaceId}
+	</select>
+	<!-- 查询场地详情 -->
+
+	<!-- 查询用户场地 -->
+	<select id="userSpace" resultMap="spaceInfoList" parameterType="string">
+		select
+		spaceId,spaceName,spaceAddress,spaceDetailAddress,spaceNum,hostId,spaceTypeId,hotSpace
+		from
+		spaceInfo where hostId=#{hostId} and spaceStatus=0
+	</select>
+	<!-- 查询用户场地 -->
+
+	<!-- 根据场地查询类型 -->
+	<select id="queryTypeId" parameterType="string" resultType="SpaceInfo">
+		select spaceTypeId,hostId from spaceInfo where spaceId=#{spaceId}
+	</select>
+	<!-- 根据场地查询类型 -->
+
+	<!-- 查询相似场地 -->
+	<select id="as_Space" resultMap="spaceInfoList" parameterType="string">
+		select
+		spaceId,spaceName,spaceAddress,spaceDetailAddress,spaceNum,hostId,spaceTypeId,hotSpace
+		from
+		spaceInfo where spaceTypeId=#{spaceTypeId} and spaceStatus=0
+	</select>
+	<!-- 查询相似场地 -->
+
+	<!-- 场地收藏数 -->
+	<select id="favoriteCount" parameterType="string" resultType="int">
+		select count(*) from favoriteInfo where
+		spaceId=#{spaceId}
+	</select>
+	<!-- 场地收藏数 -->
+
+	<!-- 场地场地数 -->
+	<select id="demandCount" parameterType="string" resultType="int">
+		select count(*) from demandInfo where
+		spaceId=#{spaceId}
+	</select>
+	<!-- 场地场地数 -->
+
+	<!-- 搜索场地 -->
+	<select id="searchSpace" parameterType="List" resultMap="spaceInfoList">
+		select
+		distinct(s.spaceId),s.spaceName,s.spaceAddress,s.spaceDetailAddress,s.spaceNum,s.hostId,s.spaceTypeId
+		from
+		spaceInfo s where 1=1 and spaceStatus=0
+		<!-- 设置参数 -->
+		<if test="spaceInfos!=null">
+			<foreach collection="spaceInfos" item="item">
+				<if test="item.cityId!='null'">
+					and s.cityId=#{item.cityId}
+				</if>
+				<if test="item.districtId!='null'">
+					and s.districtId=#{item.districtId}
+				</if>
+				<if test="item.spaceTypeId!='null'">
+					and s.spaceTypeId=#{item.spaceTypeId}
+				</if>
+				<if test="item.spaceNum!='null'">
+					and s.spaceNum=#{item.spaceNum}
+				</if>
+				<if test="item.spacePrice!=0">
+					and <![CDATA[ s.spacePrice<=#{item.spacePrice} ]]>
+				</if>
+			</foreach>
+		</if>
+
+		<!-- 批量设施 -->
+		<if test="facilityInfos != null and facilityInfos.size>0">
+			and f.facilityId in
+			<foreach collection="facilityInfos" item="item" index="index"
+				open="(" close=")" separator=",">
+				#{item.facilityId}
+			</foreach>
+		</if>
+		<!-- 批量设施 -->
+		<!-- 排序 -->
+		<if test="price=='low'">
+			order by s.spacePrice asc
+		</if>
+		<if test="price=='high'">
+			order by s.spacePrice desc
+		</if>
+		<!-- 排序 -->
+	</select>
+	<!-- 搜索场地 -->
+
+	<!-- 添加场地 -->
+	<insert id="addSpace" parameterType="SpaceInfo">
+		INSERT
+		spaceInfo(spaceId,cityId,districtId,spaceTypeId,spaceName,legalName,spacePrice,priceList,spaceNum,position,spaceArea,introduce,spacePolicy,reservationPolicy,spaceAddress,spaceDetailAddress,spacePhoto,hotSpace,hostId,spaceStatus)
+		VALUES(#{spaceId},#{cityId},#{districtId},#{spaceTypeId},#{spaceName},#{legalName},#{spacePrice},#{priceList},#{spaceNum},#{position},#{spaceArea},#{introduce},#{spacePolicy},#{reservationPolicy},#{spaceAddress},#{spaceDetailAddress},#{spacePhoto},0,#{hostId},1)
+	</insert>
+	<!-- 添加场地 -->
+
+	<!-- 查询新场地数量 -->
+	<select id="newSpace" resultType="int">
+		select count(*) from
+		spaceInfo
+		where spaceStatus=1
+	</select>
+	<!-- 查询新场地数量 -->
+
+	<!-- 查询未审核场地列表 -->
+	<select id="shenHeSpace" resultMap="spaceInfoList">
+		select
+		s.spaceId,s.spaceName,s.legalName,c.cityName,s.spaceAddress,s.spaceDetailAddress,sT.spaceTypeName,s.spaceArea,s.spaceNum,u.trueName,u.userPhone,s.spaceStatus
+		from spaceInfo s INNER JOIN userInfo u on u.userId=s.hostId INNER JOIN
+		spaceTypeInfo sT on s.spaceTypeId=sT.spaceTypeId INNER JOIN cityInfo c
+		on c.cityId=s.cityId and s.spaceStatus=1
+	</select>
+	<!-- 查询未审核场地列表 -->
+
+	<!-- 查询全部场地列表 -->
+	<select id="allSpace" resultMap="spaceInfoList">
+		select
+		s.spaceId,s.spaceName,s.legalName,c.cityName,s.spaceAddress,s.spaceDetailAddress,sT.spaceTypeName,s.spaceArea,s.spaceNum,u.trueName,u.userPhone,s.spaceStatus
+		from spaceInfo s INNER JOIN userInfo u on u.userId=s.hostId INNER JOIN
+		spaceTypeInfo sT on s.spaceTypeId=sT.spaceTypeId INNER JOIN cityInfo c
+		on c.cityId=s.cityId
+	</select>
+	<!-- 查询全部场地列表 -->
+
+	<!-- 根据Id查询场地信息 -->
+	<select id="queryById" parameterType="string" resultType="SpaceInfo">
+		select
+		s.spaceId,s.spaceName,s.legalName,s.spaceStatus,c.cityId,s.districtId,s.spaceAddress,s.spaceDetailAddress,s.position,u.trueName,u.userPhone,sT.spaceTypeName,s.spaceArea,s.spaceNum,s.introduce,s.spacePolicy,s.reservationPolicy,s.spacePrice,s.priceList
+		from spaceInfo s INNER JOIN userInfo u on u.userId=s.hostId INNER JOIN
+		spaceTypeInfo sT on s.spaceTypeId=sT.spaceTypeId INNER JOIN cityInfo c
+		on c.cityId=s.cityId and s.spaceId=#{spaceId}
+	</select>
+	<!-- 根据Id查询场地信息 -->
+
+	<!-- 修改场地信息 -->
+	<update id="updateSpace" parameterType="SpaceInfo">
+		update spaceInfo set
+		spaceStatus=#{spaceStatus},spaceName=#{spaceName},legalName=#{legalName},cityId=#{cityId},spaceTypeId=#{spaceTypeId},
+		districtId=#{districtId},spaceAddress=#{spaceAddress},spaceDetailAddress=#{spaceDetailAddress},
+		spaceNum=#{spaceNum},introduce=#{introduce},spaceArea=#{spaceArea},spacePrice=#{spacePrice},
+		reservationPolicy=#{reservationPolicy},position=#{position},spacePolicy=#{spacePolicy},
+		priceList=#{priceList}
+		where spaceId=#{spaceId}
+	</update>
+	<!-- 修改场地信息 -->
+
+	<!-- 批量修改场地状态 -->
+	<update id="updateStatus" parameterType="List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update spaceInfo set
+			spaceStatus=#{item.spaceStatus} where spaceId=#{item.spaceId}
+		</foreach>
+	</update>
+	<!-- 批量修改场地状态 -->
+
+	<!-- 审核场地 -->
+	<update id="shenHeStatus" parameterType="string">
+		update spaceInfo
+		<set>
+			spaceStatus=0
+		</set>
+		where spaceId=#{spaceId}
+	</update>
+	<!-- 审核场地 -->
+
+	<!-- 驳回场地 -->
+	<update id="boHuiStatus" parameterType="string">
+		update spaceInfo set
+		spaceStatus=2 where spaceId=#{spaceId}
+	</update>
+	<!-- 驳回场地 -->
+
+	<!-- 用户收藏场地列表 -->
+	<select id="userFavoriteSpace" resultMap="spaceInfoList"
+		parameterType="string">
+		select
+		s.spaceId,s.spaceName,s.legalName,s.spaceAddress,s.spaceDetailAddress,s.spaceNum,hotSpace
+		from
+		spaceInfo s INNER JOIN favoriteInfo f on f.spaceId=s.spaceId and
+		f.userId=#{userId}
+	</select>
+	<!-- 用户收藏场地列表 -->
+
+	<!-- 修改场地热度 -->
+	<update id="updateHot" parameterType="List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update spaceInfo set
+			hotSpace=#{item.hotSpace}
+			where spaceId=#{item.spaceId}
+		</foreach>
+	</update>
+	<!-- 修改场地热度 -->
+</mapper>

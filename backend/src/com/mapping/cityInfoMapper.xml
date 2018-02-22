@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 城市信息数据层 -->
+<mapper namespace="com.service.ICityInfoService">
+
+	<!-- 城市信息列表 -->
+	<resultMap type="CityInfo" id="cityInfoList">
+		<id column="cityId" property="cityId" />
+		<result column="cityName" property="cityName" />
+	</resultMap>
+	<!-- 城市信息列表 -->
+
+	<!-- 添加城市 -->
+	<insert id="addCity" parameterType="CityInfo">
+		insert
+		cityInfo(cityId,cityName) values(#{cityId},#{cityName})
+	</insert>
+	<!-- 添加城市 -->
+
+	<!-- 查询城市 -->
+	<select id="queryCity" resultMap="cityInfoList">
+		select cityId,cityName from
+		cityInfo
+	</select>
+	<!-- 查询城市 -->
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 用户信息数据层 -->
+<mapper namespace="com.service.IUserInfoService">
+
+	<!-- 查询用户 -->
+	<select id="queryById" resultType="UserInfo" parameterType="string">
+		select
+		userId,userName,trueName,userImg,userIntroduce
+		from
+		userInfo where
+		userId=#{userId}
+	</select>
+	<!-- 查询用户 -->
+
+	<!-- 个人信息 -->
+	<select id="queryUserDetail" parameterType="string" resultType="UserInfo">
+		select
+		userPhone,userName,trueName,userPass,userActive,userAddress,userIntroduce,userImg,userCard,userPay
+		from userInfo where userId=#{userId}
+	</select>
+
+	<!-- 登录 -->
+	<select id="isLogin" parameterType="string" resultType="UserInfo">
+		select
+		userId,userName from userInfo where userPhone=#{userAccount} and
+		userPass=#{userPass} or
+		userId=#{userAccount} and userPass=#{userPass}
+		or userName=#{userAccount} and
+		userPass=#{userPass}
+	</select>
+	<!-- 登录 -->
+
+	<!-- 查询用户是否存在 -->
+	<select id="queryPhone" resultType="UserInfo" parameterType="string">
+		select
+		userId,userName
+		from userInfo where userPhone=#{userPhone}
+	</select>
+	<!-- 查询用户是否存在 -->
+
+	<!-- 注册用户 -->
+	<insert id="registUser" parameterType="UserInfo">
+		insert
+		userInfo(userId,userPhone,userPass,userName,userImg,userActive)
+		values(#{userId},#{userPhone},#{userPass},#{userName},#{userImg},0)
+	</insert>
+	<!-- 注册用户 -->
+
+	<!-- 修改用户信息 -->
+	<update id="setUser" parameterType="UserInfo">
+		update userInfo set
+		userPhone=#{userPhone},userName=#{userName},trueName=#{trueName},userAddress=#{userAddress},userIntroduce=#{userIntroduce},userImg=#{userImg},userCard=#{userCard},userPay=#{userPay},userActive=#{userActive}
+		where userId=#{userId}
+	</update>
+	<!-- 修改用户信息 -->
+
+	<!-- 修改密码 -->
+	<update id="setPass" parameterType="string">
+		update userInfo set
+		userPass=#{userPass}
+		where userPhone=#{userPhone}
+	</update>
+	<!-- 修改密码 -->
+
+	<!-- 修改手机号 -->
+	<update id="editPhone" parameterType="string">
+		update userInfo set
+		userPhone=#{userPhone}
+		where userId=#{userId}
+	</update>
+	<!-- 修改手机号 -->
+</mapper>

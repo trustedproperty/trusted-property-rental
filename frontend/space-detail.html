@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>场地派 - 场地日租平台</title>
+    <!-- 作者：李浩铭   -->
+    <!--   -->
+    <!--   -->
+    <!--   -->
+    <link rel="shortcut icon" type="image/x-icon" href="images\www.favicon.ico" media="screen" />
+    <!-- CSS：AngularDialog -->
+    <link href="libs/ngDialog/css/ngDialog.min.css" rel="stylesheet">
+    <link href="libs/ngDialog/css/ngDialog-theme-default.min.css" rel="stylesheet">
+    <link href="libs/ngDialog/css/ngDialog-theme-plain-diy.min.css" rel="stylesheet">
+    <!-- css:Bootstrap -->
+    <link href="libs/bootstrap-3.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- css:bootstrap-datetimepicker -->
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- CSS BaiduAPI with Bootstrap -->
+    <!-- css:自定义 -->
+    <link rel="stylesheet" media="all" href="css/global.css" />
+    <style type="text/css">
+    .btn-danger-diy {
+        width: 60px;
+        color: #d9534f;
+        background-color: #fff;
+        border-color: #d43f3a;
+    }
+    
+    .text-sm span {
+        font-size: 16px;
+        height: 40px;
+        line-height: 40px;
+    }
+    
+    #idRequireForm .form-group {
+        margin-bottom: 10px;
+    }
+    </style>
+    <!--   -->
+    <!--   -->
+    <!--   -->
+    <!-- js:jQuery -->
+    <script src="libs/jquery/jquery-2.2.4.min.js"></script>
+    <!-- js:百度地图2.0 -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7bf0292149137baed3859e61732f61ca"></script>
+    <!-- js:百度地图InfoBox -->
+    <script type="text/javascript" src="js/InfoBox_min.js"></script>
+    <!-- js:jquery.cycle -->
+    <script src="js/jquery.cycle.lite.js"></script>
+</head>
+
+<body style="background-color:#F1F3F2" ng-app="SpaceDetailAPP" ng-controller="spacedetailController">
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div class="header"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--场地相册幻灯片-->
+    <div id="myCarousel" class="carousel slide">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" class="active" data-slide-to="0" ng-repeat="photo in photos" ng-if="$index == 0"></li>
+            <li data-target="#myCarousel" data-slide-to="{{$index}}" ng-repeat="photo in photos" ng-if="$index != 0"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active" ng-repeat="photo in photos" ng-if="$index == 0">
+                <img ng-src="/upload/changdipai/images/album/{{photo.url}}" alt="First slide">
+                <div class="carousel-caption">
+                    <h2 ng-bind="photo.photoName">图片标题载入中</h2>
+                </div>
+            </div>
+            <div class="item" ng-repeat="photo in photos" ng-if="$index != 0">
+                <img ng-src="/upload/changdipai/images/album/{{photo.url}}" alt="Other slide">
+                <div class="carousel-caption">
+                    <h2 ng-bind="photo.photoName">图片标题载入中</h2>
+                </div>
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+    <!--/.场地相册幻灯片-->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--简介-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <!--场地详细信息-->
+            <div class="col-sm-12">
+                <div class="row-fluid">
+                    <div class="clearfix" style="margin-bottom: 30px;"></div>
+                    <!-- 间距，清除浮动 -->
+                    <div class="col-sm-8">
+                        <!--基本信息-->
+                        <div class="row-fluid">
+                            <div class="col-sm-12" style="background-color:white;float:left;border: 1px solid #DAE8FC;">
+                                <div class="clearfix" style="margin-bottom: 30px;"></div>
+                                <!-- 间距，清除浮动 -->
+                                <div class="row-fluid">
+                                    <div class="col-sm-8">
+                                        <div class="row-fluid">
+                                            <div class="col-sm-12">
+                                                <p class="SpaceLink" id="SpaceLink-1">
+                                                    <span ng-bind="spaceinfo.spaceName">场地名称</span>
+                                                    <!--<span>，</span>
+                                                    <span ng-bind="spaceinfo.legalName">场地法定名称</span>-->
+                                                </p>
+                                                <a class="SpaceAddress" href="#SpaceMap" ng-bind="spaceinfo.spaceDetailAddress">场地地址（点击跳转到地图位置）</a>
+                                                <!--<a class="SpaceAddress" href="#SpaceMap" ng-bind="spaceinfo.spaceAddress+'，'+spaceinfo.spaceDetailAddress">场地地址（点击跳转到地图位置）</a>-->
+                                                <div class="clearfix" style="margin-bottom: 30px;"></div>
+                                                <!-- 清除浮动 -->
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid" style="font-size:12px;color:#0085a7;">
+                                            <div class="col-sm-2" id="SpaceCapacity">
+                                                <p>
+                                                    <center><img src="images/icon-svg/users5.svg" style="height:30px;width:30px" /></center>
+                                                </p>
+                                                <p>
+                                                    <center>人数
+                                                        <br />范围</center>
+                                                </p>
+                                                <p>
+                                                    <span ng-show="spaceinfo.spaceNum=='30'">30人以下</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='31-50'">31-50人</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='51-100'">51-100人</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='101-200'">101-200人</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='201-300'">201-300人</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='301-500'">301-500人</span>
+                                                    <span ng-show="spaceinfo.spaceNum=='500'">500人以上</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2" id="SpacePolicy-1">
+                                                <p>
+                                                    <center><img src="images/icon-svg/Handshake.svg" style="height:30px;width:30px" /></center>
+                                                </p>
+                                                <p>
+                                                    <center>欢迎
+                                                        <br />预定</center>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2" id="SpacePolicy-2">
+                                                <p>
+                                                    <center><img src="images/icon-svg/KnifeAndFork.svg" style="height:30px;width:30px" /></center>
+                                                </p>
+                                                <p>
+                                                    <center>咨询
+                                                        <br />餐饮</center>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2" id="SpacePolicy-3">
+                                                <p>
+                                                    <center><img src="images/icon-svg/Coins.svg" style="height:30px;width:30px" /></center>
+                                                </p>
+                                                <p>
+                                                    <center>最优
+                                                        <br />价格</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--   -->
+                                    <!--   -->
+                                    <!--   -->
+                                    <!--场主资料-->
+                                    <div class="col-sm-4">
+                                        <a ng-href="user.html?userId={{hostInfo.userId}}"><img ng-src="/upload/changdipai/images/avatar/{{hostInfo.userImg}}" class="img-circle" style="width: 150px;height: 150px;" /></a>
+                                        <p></p>
+                                        <strong>
+                                        <p class="HostName">
+                                            <span ng-bind="hostInfo.userName">主人昵称</span>
+                                        </p>
+                                        </strong>
+                                        <p>需求人气 <strong><span class="NeedNumber" ng-bind="hostInfo.demandCount+1"></span></strong></p>
+                                        <p>收藏人气 <strong><span ng-bind="hostInfo.favoriteCount+1"></span></strong>♥</p>
+                                        <p ng-bind="hostInfo.userIntroduce"></p>
+                                    </div>
+                                    <!--   -->
+                                    <!--   -->
+                                    <!--   -->
+                                </div>
+                                <div class="clearfix" style="margin-bottom: 30px;"></div>
+                                <!-- 清除浮动 -->
+                            </div>
+                        </div>
+                        <!--详细信息-->
+                        <div id="space-details-about" style="float:left;margin-top:50px;border: 1px solid #DAE8FC;">
+                            <div class="panel">
+                                <div class="panel-heading hidden-mobile">
+                                </div>
+                                <div class="panel-block">
+                                    <div class="row-fluid">
+                                        <div class="col-sm-12">
+                                            <div class="row-fluid panel-block-section">
+                                                <div class="col-sm-12">
+                                                    <h4>场地简介</h4>
+                                                    <div class="text-block js-text-block-collapsed text-sm text-tender" style="width:100%;overflow: hidden; position: relative; display: block;" ng-bind="spaceinfo.introduce">
+                                                        <p>说明内容。说明内容。</p>
+                                                        <p><strong>加粗说明内容。加粗说明内容。加粗说明内容。加粗说明内容。加粗说明内容。加粗说明内容。</strong></p>
+                                                        <p>常见问题与回答。常见问题与回答。常见问题与回答。常见问题与回答。常见问题与回答。常见问题与回答。常见问题与回答。常见问题与回答。</p>
+                                                    </div>
+                                                    <p>———————————————————————————————————————————————</p>
+                                                    <div class="clearfix" style="margin-bottom: 20px;width:100%;"></div>
+                                                    <!-- 清除浮动 -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--适合活动-->
+                                    <!--<div class="row-fluid">
+                                        <div class="col-sm-12">
+                                            <div class="panel-block-section row-fluid">
+                                                <h4 class="text-sm text-tender col-sm-3">适合活动</h4>
+                                                <div class="label-list col-sm-9 text-sm" id="SpaceClass">
+                                                    <span class="label label-default" ng-repeat="spaceTypeInfo in spaceTypeInfos" name="{{spaceTypeInfo.spaceTypeId}}" ng-bind="spaceTypeInfo.spaceTypeName">类型</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <!--/.适合活动-->
+                                    <!--设施-->
+                                    <div class="row-fluid">
+                                        <div class="col-sm-12">
+                                            <div class="panel-block-section row-fluid">
+                                                <div class="">
+                                                    <h4 class="text-sm text-tender col-sm-3">设施与环境</h4>
+                                                    <div class="col-sm-9">
+                                                        <div class="label-list" id="SpaceFacilities">
+                                                            <div class="col-sm-3" ng-repeat="spacefacility in spacefacilitys">
+                                                                <label class="label label-default" ng-value="spacefacility.facilityId" ng-bind="spacefacility.facilityInfo.facilityName" style="width:100%;font-size:14px;line-height:30px;">设施</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/.设施-->
+                                    <!--容量-->
+                                    <div class="row-fluid">
+                                        <div class="col-sm-12">
+                                            <div class="panel-block-section row-fluid">
+                                                <div class="">
+                                                    <h4 class="text-sm text-tender col-sm-3">面积</h4>
+                                                    <div class="col-sm-9">
+                                                        <div class="label-list">
+                                                            <span id="SpaceArea" ng-bind="spaceinfo.spaceArea+' 平方米'" style="line-height:40px;">？平方米</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/.容量-->
+                                    <!--价格-->
+                                    <div class="row-fluid">
+                                        <div class="col-sm-12">
+                                            <div class="panel-block-section row-fluid">
+                                                <div class="col-sm-3">
+                                                    <h4 class="text-sm text-tender">价格</h4>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <table class="table text-sm table-row-ghost text-baseline">
+                                                        <thead>价格列表</thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-nowrap text-sm">
+                                                                    <span style="line-height:40px;">标准定金</span>
+                                                                    <span><strong class="font-content-bold text-base">￥</strong></span>
+                                                                    <!--价格数字-->
+                                                                    <span id="Space-Price-Deposit" ng-bind="spaceinfo.spacePrice"><strong class="font-content-bold text-base">标准价格</strong></span>
+                                                                    <span>/天</span>
+                                                                </td>
+                                                            </tr>
+                                                            <!--定金列表-->
+                                                            <tr ng-repeat="pricelist in pricelists">
+                                                                <td class="text-nowrap text-sm">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="col-sm-3">
+                                                                            <span ng-bind="pricelist.nameDateType">星期X:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7">
+                                                                            <span><strong>￥</strong></span>
+                                                                            <span><strong ng-bind="spacepricelist[$index].priceListItem">价格数字</strong></span>
+                                                                            <span>/天</span>
+                                                                        </div>
+                                                                        <div class="col-sm-2">
+                                                                            <span style="float:right;"><button class="btn btn-inverse btn-danger btn-danger-diy" type="button" ng-click="clickToAddress()">询价</button></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <tfoot>
+                                                        <p>
+                                                            <span class="text-tender">取消政策：</span>
+                                                            <strong ng-show="spaceinfo.reservationPolicy==''">待定</strong>
+                                                            <strong ng-show="spaceinfo.reservationPolicy=='strict'">严格</strong>
+                                                            <strong ng-show="spaceinfo.reservationPolicy=='medium'">中等</strong>
+                                                            <strong ng-show="spaceinfo.reservationPolicy=='loose'">宽松</strong>
+                                                        </p>
+                                                        <div class="help-block">
+                                                            <p>
+                                                                严格（Strict）：如果取消预定，不予返还定金。
+                                                            </p>
+                                                            <p>
+                                                                适中（Moderate）：如果在入场14天之前取消，可以返还50%的定金。
+                                                            </p>
+                                                            <p>
+                                                                宽松（Flexible）：如果在入场5天之前取消，可以返还50%的定金。
+                                                            </p>
+                                                        </div>
+                                                    </tfoot>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/.价格-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--    -->
+                    <!--    -->
+                    <!--    -->
+                    <div class="col-sm-4">
+                        <!--发布需求-->
+                        <div class="row-fluid">
+                            <div class="col-sm-12" style="background-color:#DAE8FC;border: 1px solid #BBD6FF;">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-12">
+                                        <form class="form-horizontal" id="idRequireForm" name="nameRequireForm" novalidate="novalidate" autocomplete="off" accept-charset="UTF-8">
+                                            <fieldset>
+                                                <div style="margin-bottom:20px;"></div>
+                                                <div class="form-group" style="margin-bottom:8px;">
+                                                    <!-- sr-only-->
+                                                    <h4 id="require-title" style="color: rgb(82, 133, 214);text-align: center;font-size:20px;font-weight:bold;letter-spacing: 1px;">免费获取场地报价</h4>
+                                                </div>
+                                                <div class="form-group">
+                                                    <i class="explain">入场时间</i>
+                                                    <div class="input-group date form_datetime" data-date="2017-09-1" data-date-format="yyyy-MM-dd hh:ii" data-link-field="datetimepiker_input_1">
+                                                        <label for="datetimepiker_input_1" class="control-label"></label>
+                                                        <input class="form-control explainInput" size="16" type="text" value="" placeholder="时间（点击选择）" name="beginTime" readonly />
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                                    </div>
+                                                    <input id="datetimepiker_input_1" value="" hidden/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe60b 时长</i>
+                                                    <div class="input-group">
+                                                        <input class="form-control explainInput" placeholder="天数" type="text" name="timeLength" />
+                                                        <span class="input-group-addon">天</span>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:10px;"></div>
+                                                <div class="form-group">
+                                                    <i class="explain">活动类型</i>
+                                                    <select class="form-control explainInput" name="activityType">
+                                                        <option ng-repeat="spacetype in spacetypes" ng-bind="spacetype.spaceTypeName" ng-value="spacetype.spaceTypeName"></option>
+                                                    </select>
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe60c 说明</i>
+                                                    <textarea type="text" class="form-control explainInput" placeholder="最大5000个字符" name="additionalDemand"></textarea>
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div style="margin-bottom:10px;"></div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe605 姓名</i>
+                                                    <input class="form-control explainInput" placeholder="中文姓名" type="text" name="contacts" />
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe60d 组织</i>
+                                                    <input class="form-control explainInput" placeholder="公司/机构/圈子名称" type="text" name="unitName" />
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe602 手机号</i>
+                                                    <input class="form-control explainInput" id="inputUserPhone_spacedetail" placeholder="11位数字手机号码" name="contactsPhone" type="text" />
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <i class="explain">&#xe601 验证码</i>
+                                                    <input class="col-sm-8 explainInput" name="codeIdentify" placeholder="6位数字" type="text" />
+                                                    <input class="btn btn-primary col-sm-4 angle" value="发送验证码" onclick="sendAuthcode_spacedetail()" id="btnSendCode_spacedetail" type="button" />
+                                                    <!--  ng-model="userInfo.userPass" -->
+                                                </div>
+                                                <script type="text/javascript">
+                                                var InterValObj_spacedetail; //timer变量，控制时间
+                                                var count_spacedetail = 60; //间隔函数，1秒执行
+                                                var curCount_spacedetail; //当前剩余秒数
+
+                                                function sendAuthcode_spacedetail() {　
+                                                    //向后台发送处理数据
+                                                    var str = "userPhone=" + document.getElementById("inputUserPhone_spacedetail").value;
+                                                    console.log(str);
+                                                    $.ajax({　
+                                                        url: 'dreamSpace/userInfo/sendCode.html', //目标地址
+                                                        type: "GET", //用POST方式传输
+                                                        data: str,
+                                                        processData: false, // 告诉jQuery不要去处理发送的数据
+                                                        contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                                                        error: function(status) {
+                                                            console.log(status);
+                                                        },
+                                                        success: function(status) {
+                                                            console.log(status);
+                                                        }
+                                                    });
+                                                    //
+                                                    curCount_spacedetail = count_spacedetail;　　 //设置button效果，开始计时
+                                                    $("#btnSendCode_spacedetail").attr("disabled", "true");
+                                                    $("#btnSendCode_spacedetail").val("等待" + curCount_spacedetail + "秒");
+                                                    InterValObj_spacedetail = window.setInterval(setAuthcodeTime_spacedetail, 1000); //启动计时器，1秒执行一次
+                                                }
+                                                //timer处理函数
+                                                function setAuthcodeTime_spacedetail() {
+                                                    if (curCount_spacedetail == 0) {
+                                                        window.clearInterval(InterValObj_spacedetail); //停止计时器
+                                                        $("#btnSendCode_spacedetail").removeAttr("disabled"); //启用按钮
+                                                        $("#btnSendCode_spacedetail").val("重新发送");
+                                                    } else {
+                                                        curCount_spacedetail--;
+                                                        $("#btnSendCode_spacedetail").val("等待" + curCount_spacedetail + "秒");
+                                                    }
+                                                }
+                                                </script>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div style="margin-bottom:20px;"></div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group">
+                                                    <div class="col-sm-2"></div>
+                                                    <div class="col-sm-8">
+                                                        <button class="btn btn-danger btn-lg col-sm-12" onclick="insertDemand();">免费获取场地报价</button>
+                                                    </div>
+                                                    <div class="col-sm-2"></div>
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div style="margin-bottom:30px;"></div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">需求城市</label>
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="demandCity" ng-value="spaceinfo.spaceAddress" ng-if="spaceinfo.spaceAddress!=''" />
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="demandCity" ng-value="'不限城市'" ng-if="spaceinfo.spaceAddress==''" />
+                                                </div>
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">需求区域</label>
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="districtId" ng-value="spaceinfo.districtId" ng-if="spaceinfo.districtId!=''" />
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="districtId" ng-value="'不限区域'" ng-if="spaceinfo.districtId==''" />
+                                                </div>
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">需求场地ID</label>
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="spaceId" ng-value="spaceinfo.spaceId" />
+                                                </div>
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">需求场地名</label>
+                                                    <input class="col-sm-10" placeholder="默认隐藏" type="text" name="demandSpace" ng-value="spaceinfo.spaceName" />
+                                                </div>
+                                                <!--人数-->
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">人数预估</label>
+                                                    <input class="col-sm-10" type="text" name="demandNum" value="0" ng-value="spaceinfo.spaceNum" />
+                                                </div>
+                                                <!--/.人数-->
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group" hidden>
+                                                    <!-- sr-only-->
+                                                    <label class="form-control-label col-sm-11">预算价格</label>
+                                                    <div class="input-group col-sm-10">
+                                                        <span class="input-group-addon">￥</span>
+                                                        <input class="form-control" type="number" min="0" max="9000000" name="price" value="0" ng-value="spaceinfo.spacePrice" />
+                                                        <span class="input-group-addon">.00</span>
+                                                    </div>
+                                                </div>
+                                                <!--    -->
+                                                <!--    -->
+                                                <!--    -->
+                                                <div class="form-group" hidden>
+                                                    <div class="col-sm-1"></div>
+                                                    <label class="form-control-label col-sm-11">发布者Id</label>
+                                                    <div class="col-sm-1"></div>
+                                                    <input class="col-sm-10" placeholder="发布者Id（自动捕捉，默认隐藏）" name="userId" type="text" ng-value="thisUserId" />
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.发布需求-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.场地详细信息-->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div class="ng-cloak" ng-show="idDisplayEnquiry" ng-cloak>
+        <div id="ngdialog1" class="ngdialog ngdialog-theme-plain ng-scope" role="alertdialog" aria-labelledby="ngdialog1-aria-labelledby">
+            <div class="ngdialog-overlay" ng-click="closeDialog()"></div>
+            <div class="ngdialog-content" role="document" style="height: 570px;">
+                <!--发布需求-->
+                <div class="row-fluid dialogEnquiry">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" id="idEnquiryForm_dialogEnquiry_HTML">
+                            <fieldset>
+                                <div class="form-group" style="margin-bottom:8px;">
+                                    <div ng-click="closeDialog()" style="float:right;color: rgb(82, 133, 214);">
+                                        <div class="ngdialog-close"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom:8px;">
+                                    <div id="require-title" style="color: rgb(82, 133, 214);text-align: center;font-size:20px;font-weight:bold;letter-spacing: 1px;">免费获取场地报价</div>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">需求地址</i>
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandCity" ng-value="spaceinfo.spaceAddress" ng-if="spaceinfo.spaceAddress!=''" />
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandCity" ng-value="'不限城市'" ng-if="spaceinfo.spaceAddress==''" />
+                                    </div>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">需求区域</i>
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="districtId" ng-value="spaceinfo.districtId" ng-if="spaceinfo.districtId!=''" />
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="districtId" ng-value="'不限区域'" ng-if="spaceinfo.districtId==''" />
+                                    </div>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">场地ID</i>
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="spaceId" ng-value="spaceinfo.spaceId" />
+                                    </div>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">需求场地</i>
+                                        <input class="form-control explainInput" placeholder="默认隐藏" type="text" name="demandSpace" ng-value="spaceinfo.spaceName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="explain">开始时间</i>
+                                        <div class="input-group date form_datetime" data-date="2017-09-1" data-date-format="yyyy-MM-dd hh:ii" data-link-field="datetimepiker_input_2">
+                                            <label for="datetimepiker_input_2" class="control-label"></label>
+                                            <input class="form-control explainInput" size="16" type="text" value="" style="background-color: white;" placeholder="开始时间（点击选择）" name="beginTime" readonly />
+                                            <div class="input-group-addon">
+                                                <div class="glyphicon glyphicon-th"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input id="datetimepiker_input_1" value="" hidden/>
+                                </div>
+                                <div class="form-group" style="margin-bottom:8px;">
+                                    <div class="col-sm-12">
+                                        <i class="explain">&#xe60b 时长</i>
+                                        <div class="input-group">
+                                            <input class="form-control explainInput" placeholder="天数" type="text" name="timeLength" />
+                                            <div class="input-group-addon">天</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="explain">活动类型</i>
+                                        <select class="form-control explainInput" name="activityType">
+                                            <option ng-repeat="spacetype in spacetypes" ng-bind="spacetype.spaceTypeName" ng-value="spacetype.spaceTypeName"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--人数-->
+                                <div class="form-group">
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">人数预估</i>
+                                        <input class="form-control explainInput" type="text" name="demandNum" value="0" ng-value="spaceinfo.spaceNum" />
+                                    </div>
+                                </div>
+                                <!--/.人数-->
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <!-- sr-only-->
+                                    <div class="col-sm-12">
+                                        <i class="explain">预算</i>
+                                        <div class="input-group">
+                                            <div class="input-group-addon explainInput" style="background-color: white;">￥</div>
+                                            <input class="form-control" type="number" min="100" max="9000000" step="100" name="price" value="0" ng-value="spaceinfo.spacePrice" />
+                                            <div class="input-group-addon" style="background-color: white;">.00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group" style="padding-bottom:8px;">
+                                    <div class="col-sm-12">
+                                        <i class="explain" style="line-height:52px;">&#xe60c 备注</i>
+                                        <textarea class="form-control explainInput" type="text" placeholder="纯文本" name="additionalDemand" style="height:88px;"></textarea>
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group" hidden>
+                                    <div class="col-sm-12">
+                                        <i class="explain">发布者Id</i>
+                                        <input class="form-control explainInput" placeholder="发布者Id（自动捕捉，默认隐藏）" name="userId" type="text" ng-value="thisUserId" />
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="explain">&#xe605 姓名</i>
+                                        <input class="form-control explainInput" placeholder="中文姓名" type="text" name="contacts" />
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="explain">&#xe60d 组织名</i>
+                                        <input class="form-control explainInput" placeholder="公司/机构/圈子名称" type="text" name="unitName" />
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="explain">&#xe602 手机号</i>
+                                        <input class="form-control explainInput" id="inputUserPhone_dialogEnquiry" placeholder="数字" name="contactsPhone" type="text" />
+                                    </div>
+                                </div>
+                                <!--    -->
+                                <!--    -->
+                                <!--    -->
+                                <div class="form-group" style="padding-bottom:18px;">
+                                    <div class="col-sm-12">
+                                        <i class="explain">&#xe601 验证码</i>
+                                        <div class="col-sm-8" style="padding:0px;">
+                                            <input class="form-control explainInput" name="codeIdentify" placeholder="数字" type="text" />
+                                        </div>
+                                        <div class="col-sm-4" style="padding:0px;">
+                                            <input class="btn btn-primary col-sm-12 angle" value="发送验证码" onclick="sendAuthcode_dialogEnquiry()" id="btnSendCode_dialogEnquiry" type="button" />
+                                        </div>
+                                    </div>
+                                    <!--  ng-model="userInfo.userPass" -->
+                                </div>
+                                <script type="text/javascript">
+                                var InterValObj_dialogEnquiry; //timer变量，控制时间
+                                var count_dialogEnquiry = 60; //间隔函数，1秒执行
+                                var curCount_dialogEnquiry; //当前剩余秒数
+
+                                function sendAuthcode_dialogEnquiry() {　
+                                    //向后台发送处理数据
+                                    var str = "userPhone=" + document.getElementById("inputUserPhone_dialogEnquiry").value;
+                                    console.log(str);
+                                    $.ajax({　
+                                        url: 'dreamSpace/userInfo/sendCode.html', //目标地址
+                                        type: "GET", //用POST方式传输
+                                        data: str,
+                                        processData: false, // 告诉jQuery不要去处理发送的数据
+                                        contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                                        error: function(status) {
+                                            console.log(status);
+                                        },
+                                        success: function(status) {
+                                            console.log(status);
+                                        }
+                                    });
+                                    //
+                                    curCount_dialogEnquiry = count_dialogEnquiry;　　 //设置button效果，开始计时
+                                    $("#btnSendCode_dialogEnquiry").attr("disabled", "true");
+                                    $("#btnSendCode_dialogEnquiry").val("等待" + curCount_dialogEnquiry + "秒");
+                                    InterValObj_dialogEnquiry = window.setInterval(setAuthcodeTime_dialogEnquiry, 1000); //启动计时器，1秒执行一次
+                                }
+                                //timer处理函数
+                                function setAuthcodeTime_dialogEnquiry() {
+                                    if (curCount_dialogEnquiry == 0) {
+                                        window.clearInterval(InterValObj_dialogEnquiry); //停止计时器
+                                        $("#btnSendCode_dialogEnquiry").removeAttr("disabled"); //启用按钮
+                                        $("#btnSendCode_dialogEnquiry").val("重新发送");
+                                    } else {
+                                        curCount_dialogEnquiry--;
+                                        $("#btnSendCode_dialogEnquiry").val("等待" + curCount_dialogEnquiry + "秒");
+                                    }
+                                }
+                                </script>
+                                <div class="form-group">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-8">
+                                        <button class="btn btn-danger col-sm-12" onclick="publishEnquiry_dialogEnquiry_HTML();">免费获取场地报价</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <!--/.发布需求-->
+                </div>
+                <script>
+                function publishEnquiry_dialogEnquiry_HTML() {
+                    console.log("dreamSpace/space/insertDemand.html");
+                    console.log($('#idEnquiryForm_dialogEnquiry_HTML').serialize());
+                    $.ajax({
+                        type: "post",
+                        url: "dreamSpace/space/insertDemand.html", //请求路径
+                        data: $('#idEnquiryForm_dialogEnquiry_HTML').serialize(),
+                        async: false,
+                        dataType: "json",
+                        success: function(data) {
+                            console.log("success");
+                            console.log("data");
+                            console.log(data);
+                            if (data.data == "success") {
+                                setTimeout('window.location.href = "/success.html?type=require";', 1000);
+                            }
+                            /* else if (data.error == "验证码不正确") {
+                                            console.log('return "error-inputCheck";');
+                                            return "error-inputCheck";
+                                        }*/
+                        },
+                        error: function(data) {
+                            console.error("error");
+                            return data;
+                            //setCookie('userId', data.userInfo.userId);
+                            //setCookie('userName', data.userInfo.userName);
+                        }
+                    });
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+    <!---->
+    <!---->
+    <!---->
+    <!--场地地图-->
+    <div id="SpaceMap"></div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <!--标题-->
+                <div class="row-fluid">
+                    <div class="col-sm-12">
+                        <center>
+                            <h3>位置</h3></center>
+                    </div>
+                </div>
+                <!--场地地图-->
+                <div class="row-fluid">
+                    <div class="col-sm-12">
+                        <div hidden>
+                            <span>要查询的地址：<input id="text_" type="text" value="上海浦东" style="margin-right:100px;" /></span>
+                            <span>查询结果(经纬度)：<input id="result_" type="text" /></span>
+                            <input type="button" value="查询" onclick="searchByStationNamebyKeyword('上海浦东','<br />测试展示信息');" />
+                            <input id="testMapView" type="text" value="<br />测试展示信息" />
+                        </div>
+                        <div id="mapContainer" style="top:0px;width: 100%;height: 400px;margin:0px;padding:0px;/*border: 1px solid gray;*/overflow:hidden;">
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                var map = new BMap.Map("mapContainer");
+                //鼠标控制                
+                map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
+                map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
+                //地图类型控制（右上角）
+                var mapType1 = new BMap.MapTypeControl({
+                    mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+                });
+                map.addControl(mapType1); //2D图，卫星图
+                map.centerAndZoom("浦东", 12);
+                //缩略图
+                map.addControl(new BMap.NavigationControl()); //添加默认缩放平移控件
+                map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+                map.addControl(new BMap.OverviewMapControl({
+                    isOpen: 1,
+                    anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+                })); //右下角，打开
+
+                var localSearch = new BMap.LocalSearch(map);
+                localSearch.enableAutoViewport(); //允许自动调节窗体大小
+                function searchByStationNamebyKeyword(Keyword, View) {
+                    map.clearOverlays(); //清空原来的标注
+                    var keyword = Keyword;
+                    console.log("Keyword：" + Keyword);
+                    console.log('keyword：' + keyword);
+                    localSearch.setSearchCompleteCallback(function(searchResult) {
+                        var poi = searchResult.getPoi(0);
+                        document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+                        //console.log(poi.point.lng + "," + poi.point.lat);
+                        map.centerAndZoom(poi.point, 15);
+                        var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat)); // 创建标注，为要查询的地方对应的经纬度
+                        map.addOverlay(marker);
+
+                        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+                        var content = View; //要展示的信息
+                        console.log("content：" + content);
+                        //标签窗体
+                        var html = [content];
+                        /*
+                        var infoBox = new BMapLib.InfoBox(map, html.join(""), {
+                            offset: new BMap.Size(0, 25),
+                            boxStyle: {
+                                "background-color": "#BFE1FF",
+                                border: "3px double #286090",
+                                width: "200px",
+                                height: "100px",
+                                padding: "20px",
+                                "font-size": "16px",
+                                "padding-right": "40px",
+                                "border-radius": "20px"
+                            },
+                            closeIconMargin: "1px 1px 0 0",
+                            enableAutoPan: true,
+                            align: INFOBOX_AT_TOP
+                        });
+                        infoBox.open(marker); //打开提示
+                        marker.addEventListener("click", function() {
+                            infoBox.open(marker);
+                        });*/
+                        //
+                        var opts = {
+                            position: poi.point, // 指定文本标注所在的地理位置
+                            offset: new BMap.Size(20, -40) //设置文本偏移量
+                        }
+                        var spacelabel = new BMap.Label(content, opts); // 创建文本标注对象
+                        spacelabel.setStyle({
+                            color: "black",
+                            fontSize: "14px",
+                            height: "30px",
+                            lineHeight: "30px",
+                            fontFamily: "微软雅黑",
+                            padding: "0 5px 0 5px",
+                            border: "1px solid #1FA561",
+                            "border-radius": "5px"
+                        });
+                        map.addOverlay(spacelabel);
+                    });
+                    localSearch.search(keyword);
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+    <!--/.场地地图-->
+    <!--   -->
+    <!--   -->
+    <!--   -->
+    <!--场主全部场地-->
+    <div class="container-fluid">
+        <!--标题-->
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <center>
+                    <h3>该场主更多场地</h3></center>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <div class="row-fluid">
+                    <div ng-repeat="morespace in morespaces track by $index">
+                        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                        <div class="col-sm-4">
+                            <div class="row-fluid">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <a class="card-img-top-container" href="space-detail.html?spaceId={{morespace.spaceId}}">
+                                            <img class="card-img-top" ng-src="/upload/changdipai/images/album/{{morespace.spacePhoto}}" />
+                                            <!--收藏场地-->
+                                            <form id="{{'formFavoriteAdd'+morespace.spaceId}}">
+                                                <input type="text" name="userId" ng-value="thisUserId" hidden/>
+                                                <input type="text" name="spaceId" ng-value="morespace.spaceId" hidden />
+                                                <a class="card-img-caption" href="javascript:void(0);" onclick="addFavorite(this.parentNode.id);">
+                                                    <img src="images/icon-svg/favorite.svg" />
+                                                    <span ng-bind="morespace.hotSpace">233</span>
+                                                </a>
+                                            </form>
+                                            <script type="text/javascript">
+                                            function addFavorite(IdForm) {
+                                                IdForm = "#" + IdForm;
+                                                ajaxFormJson('/dreamSpace/favoriteInfo/addFavorite.html', 'get', IdForm, '');
+                                            }
+                                            </script>
+                                        </a>
+                                        <div class="card-block card-block-features">
+                                            <p>
+                                                <a class="SpaceLink ellipsis" ng-href="space-detail.html?spaceId={{morespace.spaceId}}">
+                                                    <span ng-bind="morespace.spaceName">场地昵称</span>
+                                                </a>
+                                            </p>
+                                            <p>
+                                                <!--<span ng-bind="morespace.spaceAddress">场地名称（点击跳转到场地详情页）</span>-->
+                                                <span class="ellipsis" ng-bind="morespace.spaceDetailAddress">场地地址（不可点击）</span>
+                                            </p>
+                                            <p>
+                                                <span ng-show="morespace.spaceNum=='30'">30人以下</span>
+                                                <span ng-show="morespace.spaceNum=='31-50'">31-50人</span>
+                                                <span ng-show="morespace.spaceNum=='51-100'">51-100人</span>
+                                                <span ng-show="morespace.spaceNum=='101-200'">101-200人</span>
+                                                <span ng-show="morespace.spaceNum=='201-300'">201-300人</span>
+                                                <span ng-show="morespace.spaceNum=='301-500'">301-500人</span>
+                                                <span ng-show="morespace.spaceNum=='500'">500人以上</span>
+                                            </p>
+                                            <!--
+                                            <a href="javascript:void(0)" title="可以议价"><img class="imgIcon" src="images/icon-svg/Handshake.svg" /></a>
+                                            <a href="javascript:void(0)" title="可订餐饮"><img class="imgIcon" src="images/icon-svg/KnifeAndFork.svg" /></a>
+                                            <a href="javascript:void(0)" title="最低价格"><img class="imgIcon" src="images/icon-svg/Coins.svg" /></a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.场主全部场地-->
+    <!--   -->
+    <!--   -->
+    <!--   -->
+    <!--相似场地-->
+    <div class="container-fluid">
+        <!--标题-->
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <center>
+                    <h3>相似场地</h3></center>
+            </div>
+        </div>
+        <!--文字-->
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <div class="row-fluid">
+                    <div ng-repeat="asspace in asspaces track by $index">
+                        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                        <div class="col-sm-4">
+                            <div class="row-fluid">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <!--    -->
+                                        <!--    -->
+                                        <!--    -->
+                                        <a class="card-img-top-container" href="space-detail.html?spaceId={{asspace.spaceId}}">
+                                            <img class="card-img-top" ng-src="/upload/changdipai/images/album/{{asspace.spacePhoto}}" />
+                                            <!--收藏场地-->
+                                            <form id="{{'formFavoriteAdd'+asspace.spaceId}}">
+                                                <input type="text" name="userId" ng-value="thisUserId" hidden/>
+                                                <input type="text" name="spaceId" ng-value="asspace.spaceId" hidden />
+                                                <a class="card-img-caption" href="javascript:void(0);" onclick="addFavorite(this.parentNode.id);">
+                                                    <img src="images/icon-svg/favorite.svg" />
+                                                    <span ng-bind="asspace.hotSpace">233</span>
+                                                </a>
+                                            </form>
+                                            <script type="text/javascript">
+                                            function addFavorite(IdForm) {
+                                                IdForm = "#" + IdForm;
+                                                ajaxFormJson('/dreamSpace/favoriteInfo/addFavorite.html', 'get', IdForm, '');
+                                            }
+                                            </script>
+                                        </a>
+                                        <div class="card-block card-block-features">
+                                            <p>
+                                                <a class="SpaceLink ellipsis" ng-href="space-detail.html?spaceId={{asspace.spaceId}}">
+                                                    <span ng-bind="asspace.spaceName">场地昵称</span>
+                                                    <!--<span>，</span>
+                                                    <span ng-bind="asspace.spaceAddress">场地名称（点击跳转到场地详情页）</span>-->
+                                                </a>
+                                            </p>
+                                            <p><span class="ellipsis" ng-bind="asspace.spaceDetailAddress">场地地址（不可点击）</span></p>
+                                            <p>
+                                                <span ng-show="asspace.spaceNum=='30'">30人以下</span>
+                                                <span ng-show="asspace.spaceNum=='31-50'">31-50人</span>
+                                                <span ng-show="asspace.spaceNum=='51-100'">51-100人</span>
+                                                <span ng-show="asspace.spaceNum=='101-200'">101-200人</span>
+                                                <span ng-show="asspace.spaceNum=='201-300'">201-300人</span>
+                                                <span ng-show="asspace.spaceNum=='301-500'">301-500人</span>
+                                                <span ng-show="asspace.spaceNum=='500'">500人以上</span>
+                                            </p>
+                                            <!--
+                                            <a href="javascript:void(0)" title="可以议价"><img class="imgIcon" src="images/icon-svg/Handshake.svg" /></a>
+                                            <a href="javascript:void(0)" title="可订餐饮"><img class="imgIcon" src="images/icon-svg/KnifeAndFork.svg" /></a>
+                                            <a href="javascript:void(0)" title="最低价格"><img class="imgIcon" src="images/icon-svg/Coins.svg" /></a>
+                                            -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.相似场地-->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div ng-include="'includes/footer.html'"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- JS：AngularJS -->
+    <script src="js/angular.min.1.5.8.js"></script>
+    <!-- js：AngularJSCookies -->
+    <script src="js/angular-cookies.1.0.8.js"></script>
+    <!-- js：AngularDialog -->
+    <script src="libs/ngDialog/js/ngDialog.min.js"></script>
+    <!-- JS:angular-ui-bootstrap -->
+    <script src="js/angular-ui-bootstrap.0.12.0.js"></script>
+    <!-- js:Bootstrap -->
+    <script src="libs/bootstrap-3.3.6/dist/js/bootstrap.min.js"></script>
+    <!-- js:bootstrap-datetimepicker -->
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <!-- js:bootstrap-datetimepicker.zh-CN -->
+    <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <!-- js:自定义 -->
+    <script src="js/global.js"></script>
+    <!-- js:angular自定义 -->
+    <script>
+    var appSpaceDetail_Html = angular.module("SpaceDetailAPP", ['ngDialog']);
+    appSpaceDetail_Html.value('mapInfo', {
+        "mapSpaceName": "mapSpaceName",
+        "mapSpaceDetailAddress": "mapSpaceDetailAddress"
+    });
+    appSpaceDetail_Html.controller("spacedetailController", function spacedetailController($scope, $rootScope, $http, $sce, mapInfo, ngDialog) {
+
+        $scope.idDisplayEnquiry = false;
+        //登录者ID
+        $scope.thisUserId = getCookie("userId");
+        //场地详情
+        var url = "dreamSpace/space/space_details.html?spaceId=" + getPar("spaceId");
+        //console.log(url);
+        $http.get(url).success(function(response) {
+            //场地相册
+            $scope.photos = response.photoSpace;
+            //场地信息
+            $scope.spaceinfo = response.spaceDetail;
+            //本场地类型
+            $scope.spaceTypeInfos = response.spaceTypeInfos;
+            //本场地设施
+            $scope.spacefacilitys = response.spaceFacilityInfo;
+            //主人信息
+            $scope.hostInfo = response.hostInfo;
+            //更多场地
+            $scope.morespaces = response.moreSpace;
+            //相似场地
+            $scope.asspaces = response.as_Space;
+            //场地价格列表
+            $scope.spacepricelist = response.priceList;
+            //场地地图
+            mapInfo.mapSpaceName = response.spaceDetail.spaceName;
+            mapInfo.mapSpaceDetailAddress = response.spaceDetail.spaceDetailAddress;
+            console.log("mapInfo.mapSpaceName：" + mapInfo.mapSpaceName);
+            console.log("mapInfo.mapSpaceDetailAddress" + mapInfo.mapSpaceDetailAddress);
+            searchByStationNamebyKeyword(mapInfo.mapSpaceDetailAddress, mapInfo.mapSpaceName);
+        });
+        //活动类型
+        var url = "dreamSpace/spaceTypeInfo/spaceTypeInfo.html";
+        //console.log(url);
+        $http.get(url).success(function(response) {
+            $scope.spacetypes = response.spaceTypeInfos;
+            //console.log(response[0].spaceTypeId);
+        });
+        //价格类型
+        var url = "json/listPriceType.json";
+        $http.get(url).success(function(response) {
+            $scope.pricelists = response;
+            //console.log(response[0].idGuestnumber);
+        });
+        //需求弹出框
+        $scope.clickToAddress = function() {
+            console.log($scope.idDisplayEnquiry);
+            $scope.idDisplayEnquiry = true;
+            /*
+            ngDialog.open({
+                template: '/includes/dialogEnquiry.html', //模式对话框内容为test.html
+                className: 'ngdialog-theme-plain',
+                height: 570,
+                widht: 200,
+                scope: $scope //将scope传给test.html,以便显示地址详细信息
+
+            });
+            */
+        };
+        $scope.closeDialog = function() {
+            $scope.idDisplayEnquiry = false;
+        };
+    });
+    </script>
+</body>
+<!--    -->
+<!--    -->
+<!--    -->
+
+</html>

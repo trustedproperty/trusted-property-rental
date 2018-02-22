@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 场地文件信息数据层 -->
+<mapper namespace="com.service.ISpaceFileInfoService">
+
+	<!-- 场地文件信息列表 -->
+	<resultMap type="SpaceFileInfo" id="spaceFileInfo">
+		<id column="fileId" property="fileId" />
+		<result column="spaceId" property="spaceId" />
+		<result column="file" property="file" />
+		<result column="fileName" property="fileName" />
+	</resultMap>
+	<!-- 场地文件信息列表 -->
+
+	<!-- 添加场地文件 -->
+	<insert id="addFile" parameterType="SpaceFileInfo">
+		insert
+		spaceFileInfo(fileId,spaceId,file,fileName)
+		values(#{fileId},#{spaceId},#{file},#{fileName})
+	</insert>
+	<!-- 添加场地文件 -->
+
+	<!-- 查询场地文件 -->
+	<select id="querySpace" resultMap="spaceFileInfo" parameterType="string">
+		select fileId,file,fileName from
+		spaceFileInfo where spaceId=#{spaceId}
+	</select>
+	<!-- 查询场地文件 -->
+</mapper>

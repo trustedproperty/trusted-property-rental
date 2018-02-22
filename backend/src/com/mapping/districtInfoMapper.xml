@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 城区信息数据层 -->
+<mapper namespace="com.service.IDistrictInfoService">
+
+	<!-- 城区信息列表 -->
+	<resultMap type="DistrictInfo" id="districtInfoList">
+		<id column="districtId" property="districtId" />
+		<result column="districtName" property="districtName" />
+		<result column="cityId" property="cityId" />
+		<result column="cityName" property="cityName" />
+	</resultMap>
+	<!-- 城区信息列表 -->
+
+	<!-- 查询城区 -->
+	<select id="queryDistrict" resultMap="districtInfoList">
+		select
+		d.districtId,d.districtName,d.cityId,c.cityName from
+		districtInfo d
+		INNER JOIN cityInfo c on d.cityId=c.cityId
+	</select>
+	<!-- 查询城区 -->
+	
+	<!-- 添加城区 -->
+	<insert id="insertDistinct" parameterType="List">	
+		insert into districtInfo(districtId,districtName,cityId) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.districtId},#{item.districtName},#{item.cityId})
+		</foreach>
+	</insert>
+	<!-- 添加城区 -->
+	
+</mapper>

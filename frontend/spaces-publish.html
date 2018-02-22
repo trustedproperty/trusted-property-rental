@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>场地派 - 场地日租平台</title>
+    <!-- 作者：李浩铭   -->
+    <link rel="shortcut icon" type="image/x-icon" href="images\www.favicon.ico" media="screen" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- css:Bootstrap -->
+    <link href="libs/bootstrap-3.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- css:bootstrap-datetimepicker -->
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- css:自定义 -->
+    <link rel="stylesheet" media="all" href="css/global.css" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- js:jQuery -->
+    <script src="libs/jquery/jquery-2.2.4.min.js"></script>
+</head>
+
+<body ng-app="spacesPublishHtmlApp" ng-controller="spacepublishController as controller">
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div class="header"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--发布场地-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <form class="form-horizontal" id="idSpacePostForm" name="nameSpacesPublishForm" ng-submit="submit()" novalidate="novalidate" autocomplete="off" accept-charset="UTF-8">
+                    <fieldset hidden>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label>发布者Id</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input class="col-sm-12" placeholder="发布者Id（自动捕捉，默认隐藏）" name="hostId" type="text" ng-value="thisUserId" />
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4"></div>
+                            <input value="发布结果" id="inputReturn" />
+                            <!--addSpace();-->
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                    </fieldset>
+                    <fieldset>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <center>
+                                    <h4>1.概况</h4>
+                                </center>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.spaceName.$invalid &&  ( nameSpacesPublishForm.spaceName.$touched || submitted) }">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">场地名称</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe615</i>
+                                <input class="form-control iconInput" type="text" placeholder="中文名称" name="spaceName" ng-model="controller.spaceName" ng-minlength="2" ng-maxlength="20" required/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.spaceName.$error" ng-if="nameSpacesPublishForm.spaceName.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'长度至少为2'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'长度最多为20'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.legalName.$invalid && ( nameSpacesPublishForm.legalName.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">正式名称</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe614</i>
+                                <input class="form-control iconInput" type="text" placeholder="中文名称" name="legalName" ng-model="controller.legalName" ng-minlength="2" ng-maxlength="20" required/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.legalName.$error" ng-if="nameSpacesPublishForm.legalName.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'长度至少为2'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'长度最多为20'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--城市/区域-->
+                        <div class="form-group">
+                            <!--<label class="form-control-label sr-only">地址</label>-->
+                            <div class="col-sm-4">
+                                <label class="form-control-label">城市/区域</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="col-sm-6" ng-model="thisSelectCityId" ng-options="city.cityId as city.cityName for city in citys" changedistrict>
+                                </select>
+                                <input type="text" name="cityId" ng-value="thisSelectCityId" hidden />
+                                <select class="col-sm-6" name="districtId">
+                                    <option ng-repeat="district in districts" ng-value="district.districtId" ng-bind="district.districtName" ng-if="district.cityId==thisSelectCityId"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.spaceAddress.$invalid && ( nameSpacesPublishForm.spaceAddress.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">商圈</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe610</i>
+                                <input class="form-control iconInput" type="text" placeholder="商圈" name="spaceAddress" ng-model="controller.spaceAddress" ng-minlength="2" ng-maxlength="50" required/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.spaceAddress.$error" ng-if="nameSpacesPublishForm.spaceAddress.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'长度至少为2'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'长度最多为50'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.spaceDetailAddress.$invalid && ( nameSpacesPublishForm.spaceDetailAddress.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">场地详细地址</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe610</i>
+                                <input class="form-control iconInput" type="text" placeholder="地址" name="spaceDetailAddress" ng-model="controller.spaceDetailAddress" ng-minlength="2" ng-maxlength="50" required/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.spaceDetailAddress.$error" ng-if="nameSpacesPublishForm.spaceDetailAddress.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'长度至少为2'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'长度最多为50'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" hidden>
+                            <div class="col-sm-4">
+                                <label class="form-control-label">场地位置</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe60f</i>
+                                <input class="col-sm-12 iconInput" name="Position" type="text" placeholder="地图坐标" value="1,2" />
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <center>
+                                    <h4>2.相册</h4>
+                                </center>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.inputPhotoErrorType.$invalid}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">选择照片</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div>
+                                    <div hidden>
+                                        <input id="inputMultifile" type="file" multiple size="30" />
+                                    </div>
+                                    <input class="btn btn-primary" type="button" onclick="selectPhoto_SpacesPublishHtml();" value="选择照片" />
+                                    <script type="text/javascript">
+                                    function selectPhoto_SpacesPublishHtml() {
+                                        document.getElementById("inputMultifile").click();
+                                    }
+                                    </script>
+                                </div>
+                                <div hidden>
+                                    <!--检测照片-->
+                                    <input id="inputPhotoErrorType" name="inputPhotoErrorType" ng-model="controller.inputPhotoErrorType" ng-minlength="3" required/>
+                                    <!--警告信息连接框-->
+                                    <input id="idInputPhotoErrorDialog" ng-model="inputPhotoErrorDialog" />
+                                </div>
+                                <div>
+                                    <!--预览区域-->
+                                    <div id="resultAlbum" class="col-sm-12"></div>
+                                    <div class="help-block" ng-messages="nameSpacesPublishForm.inputPhotoErrorType.$error" ng-if="nameSpacesPublishForm.inputPhotoErrorType.$invalid">
+                                        <p ng-message="required" ng-bind="'必须选择上传照片'" ng-cloak></p>
+                                        <p ng-message="minlength" ng-bind="inputPhotoErrorDialog"></p>
+                                    </div>
+                                    <div ng-if="!nameSpacesPublishForm.inputPhotoErrorType.$invalid">
+                                        <p ng-bind="'照片载入成功'" ng-cloak></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block">
+                                    <p>照片须知</p>
+                                    <p>请您仔细阅读下列标准，准备照片，一次性上传。</p>
+                                    <p>1. 至少上传5张，一次上传不超过30张。</p>
+                                    <p>2. 推荐jpg、jpeg、png格式。</p>
+                                    <p>3. 照片大小要求：大于50KB，小于5M。</p>
+                                    <p>4. 为保证视觉质量，图片分辨率至少 600 × 400 像素。</p>
+                                    <p>5. 图片宽高比应在1-3之间。</p>
+                                </div>
+                                <div hidden>
+                                    <pre>{{nameSpacesPublishForm.inputPhotoErrorType.$error}}</pre>
+                                    <pre>{{nameSpacesPublishForm.inputPhotoErrorType.$invalid}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#inputMultifile').change(function() {
+                                var MaxImgLength = 30;
+                                var MinImgLength = 5;
+                                var MinImgWidth = 600; //1200
+                                var MinImgHeight = 400; //750
+                                var MaxImgSize = 5 * 1024 * 1024; //5M
+                                var MinImgSize = 50 * 1024; //50KB
+                                var MaxImgRate = 3;
+                                var MinImgRate = 1;
+                                //照片检测
+                                //预览提示
+                                document.getElementById("resultAlbum").innerHTML = "";
+                                document.getElementById("idInputPhotoErrorDialog").value = "照片载入中，请耐心等待 . . .";
+                                $("#idInputPhotoErrorDialog").trigger('input');
+                                document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                $("#inputPhotoErrorType").trigger('input');
+                                //开始检测
+                                console.log("inputMultifile");
+                                var fileImages = document.getElementById("inputMultifile").files;
+                                //检测照片数量
+                                console.log("fileImagesLength=");
+                                console.log(fileImages.length);
+                                if (fileImages.length < MinImgLength) {
+                                    console.log("至少上传" + MinImgLength + "张照片"); //过滤特殊情况
+                                    document.getElementById("idInputPhotoErrorDialog").value = "至少上传" + MinImgLength + "张照片";
+                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                    $("#inputPhotoErrorType").trigger('input');
+                                    return false;
+                                }
+                                if (fileImages.length > MaxImgLength) {
+                                    console.log("一次上传不得超过" + MaxImgLength + "张照片"); //过滤特殊情况
+                                    document.getElementById("idInputPhotoErrorDialog").value = "一次上传不得超过" + MaxImgLength + "张照片";
+                                    $("#idInputPhotoErrorDialog").trigger('input');
+                                    document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                    $("#inputPhotoErrorType").trigger('input');
+                                    return false;
+                                }
+                                //检测照片属性
+                                var timesImgReader = 0;
+                                for (var i = 0; i < fileImages.length; i++) {
+                                    file = fileImages[i];
+                                    //检测照片格式
+                                    if (!/image\/\w+/.test(file.type)) {
+                                        document.getElementById("idInputPhotoErrorDialog").value = "照片格式错误，必须是.gif,jpeg,jpg,png中的一种";
+                                        $("#idInputPhotoErrorDialog").trigger('input');
+                                        document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                        $("#inputPhotoErrorType").trigger('input');
+                                        return false;
+                                    }
+                                    //检测照片大小（占用空间）
+                                    console.log("file.size");
+                                    console.log(file.size / 1024 / 1024);
+                                    if (file.size > 0) {
+                                        if (file.size > MaxImgSize) {
+                                            document.getElementById("idInputPhotoErrorDialog").value = "请勿选择过大的照片";
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        } else if (file.size < MinImgSize) { //不得小于指定值
+                                            document.getElementById("idInputPhotoErrorDialog").value = "请勿选择过小的照片";
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        }
+                                    }
+                                    //判断图片像素大小
+                                    var reader = new FileReader();
+                                    var img = new Image();
+                                    reader.onloadend = function(evt) {
+                                        console.log('timesImgReader');
+                                        console.log(timesImgReader);
+                                        console.log('fileImages.length');
+                                        console.log(fileImages.length);
+                                        console.log('reader.readAsDataURL');
+                                        img.src = this.result;
+                                        var width = img.width;
+                                        console.log("img.width");
+                                        console.log(img.width);
+                                        var height = img.height;
+                                        console.log("img.height");
+                                        console.log(img.height);
+
+                                        if (img.width < MinImgWidth || img.height < MinImgHeight) {
+                                            document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过小! 为保证视觉质量，该照片大小至少为" + MinImgWidth + "×" + MinImgHeight;
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        }
+                                        if (img.width / img.height < MinImgRate) {
+                                            document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过高! 为保证视觉质量，场地照片宽度：高度比例至少为" + MinImgRate;
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+                                        } else if (img.width / img.height > MaxImgRate) {
+                                            document.getElementById("idInputPhotoErrorDialog").value = "第" + (timesImgReader + 1) + "张照片过宽! 为保证视觉质量，场地照片宽度：高度比例不超过" + MaxImgRate;
+                                            $("#idInputPhotoErrorDialog").trigger('input');
+                                            document.getElementById("inputPhotoErrorType").value = "1"; //照片错误
+                                            $("#inputPhotoErrorType").trigger('input');
+                                            return false;
+
+                                        }
+                                        timesImgReader++;
+                                        if (timesImgReader == fileImages.length) {
+                                            console.log('成功');
+                                            console.log('i');
+                                            console.log(i);
+                                            readAsDataURL('inputMultifile', 'resultAlbum', 'inputPhotoErrorType');
+                                            return true;
+                                        }
+                                        return true;
+                                    }
+                                    reader.readAsDataURL(file);
+                                }
+                                //./循环结束
+                                //readAsDataURL('inputMultifile', 'resultAlbum', 'inputPhotoErrorType');
+                                //输出选择文件个数
+                                document.getElementById("lengthPhotoInputId").value = fileImages.length;
+                                $("#lengthPhotoInputId").trigger('input');
+                            });
+                        });
+                        </script>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.lengthPhotoInputName.$invalid && ( nameSpacesPublishForm.lengthPhotoInputName.$touched || submitted )}" hidden>
+                            <div class="col-sm-4">
+                                <label class="form-control-label">照片数量</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <!--oninput="alert('this.value');" onpropertychange="alert('this.value')" -->
+                                    <input class="form-control" id="lengthPhotoInputId" name="lengthPhotoInputName" ng-model="controller.lengthPhotoInputName" oninput="textPhotoNameChange()" onpropertychange="textPhotoNameChange()" required />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.lengthPhotoInputName.$error" ng-if="nameSpacesPublishForm.lengthPhotoInputName.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.titlePhotoErrorInputName.$invalid}" style="display:none">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">照片标题</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <i class="icon">&#xe60c</i>
+                                    <!--oninput="alert('this.value');" onpropertychange="alert('this.value')" -->
+                                    <textarea class="form-control iconInput" id="textPhotoName" name="textareaPhotoNameName" rows="5" cols="20" placeholder="请输入照片标题，每个标题一行。&#10如：&#10大厅&#10院子&#10" style="margin:0;" oninput="textPhotoNameChange()" onpropertychange="textPhotoNameChange()" required></textarea>
+                                    <input id="titlePhotoErrorInputId" name="titlePhotoErrorInputName" ng-model="controller.titlePhotoErrorInputName" ng-minlength="3" hidden/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="titlePhotoErrorDialogInputId" ng-model="titlePhotoErrorDialog" hidden/>
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.titlePhotoErrorInputName.$error" ng-if="nameSpacesPublishForm.titlePhotoErrorInputName.$invalid">
+                                    <p ng-message="minlength" ng-bind="titlePhotoErrorDialog"></p>
+                                </div>
+                            </div>
+                            <script>
+                            function textPhotoNameChange() {
+                                //console.log('textPhotoName');
+                                var arrayAlbumName = string2array(document.getElementById("textPhotoName").value, '\n');
+                                console.log('arrayAlbumName.length');
+                                console.log(arrayAlbumName.length);
+                                var lengthPhoto = document.getElementById("lengthPhotoInputId").value;
+                                //检测是否已经选择照片
+                                if (lengthPhoto == 0) {
+                                    document.getElementById("titlePhotoErrorDialogInputId").value = "您还没有选择照片";
+                                    $("#titlePhotoErrorDialogInputId").trigger('input');
+                                    document.getElementById("titlePhotoErrorInputId").value = -1;
+                                    $("#titlePhotoErrorInputId").trigger('input');
+                                    return false;
+                                }
+                                //检测图片与标题数量是否相同
+                                if (arrayAlbumName.length == 0) {
+                                    return true;
+                                } else {
+                                    if (arrayAlbumName.length < lengthPhoto) {
+                                        document.getElementById("titlePhotoErrorDialogInputId").value = "您填写了" + arrayAlbumName.length + "个标题，少于您选择的" + lengthPhoto + "个照片";
+                                        $("#titlePhotoErrorDialogInputId").trigger('input');
+                                        document.getElementById("titlePhotoErrorInputId").value = -1;
+                                        $("#titlePhotoErrorInputId").trigger('input');
+                                        return false;
+                                    } else if (arrayAlbumName.length > lengthPhoto) {
+                                        document.getElementById("titlePhotoErrorDialogInputId").value = "您填写了" + arrayAlbumName.length + "个标题，多于您选择的" + lengthPhoto + "个照片";
+                                        $("#titlePhotoErrorDialogInputId").trigger('input');
+                                        document.getElementById("titlePhotoErrorInputId").value = -1;
+                                        $("#titlePhotoErrorInputId").trigger('input');
+                                        return false;
+                                    } else if (arrayAlbumName.length == lengthPhoto) {
+                                        document.getElementById("titlePhotoErrorInputId").value = 100;
+                                        $("#titlePhotoErrorInputId").trigger('input');
+                                        return true;
+                                    }
+                                }
+                            }
+                            </script>
+                        </div>
+                        <div hidden>
+                            <div>函数测试区域</div>
+                            <a class="btn btn-primary" onclick='getAlbumName_spacespublish_html("inputPhotoTitle",document.getElementById("inputMultifile").files.length);'>获得照片名</a>
+                        </div>
+                        <script type="text/javascript">
+                        function spacesPublish() {
+                            //获得相册文件列表
+                            var fileImages = document.getElementById("inputMultifile").files;
+                            console.log("fileImages.length");
+                            console.log(fileImages.length);
+                            //获得相册名称数组
+                            var arrayAlbumName = getAlbumName_spacespublish_html('inputPhotoTitle', fileImages.length);
+                            //var arrayAlbumName = string2array(document.getElementById("textPhotoName").value, '\n');
+                            //上传封面照片
+                            var thisFormData = new FormData();
+                            thisFormData.append("file", fileImages[0]); //设置照片文件
+                            thisFormData.append("newFile", arrayAlbumName[0]);
+                            var urlCoverImage = ajaxFormData("post", "/dreamSpace/space/sendPhoto.html", thisFormData, false).fileName; //上传封面照片
+                            console.log("urlCoverImage=");
+                            console.log(urlCoverImage);
+                            //上传场地表单
+                            var strForm = $('#idSpacePostForm').serialize();
+                            strForm += "&priceList=";
+                            for (var i = 0; i < 7; i++) { //获得价格列表
+                                var strI = i.toString();
+                                var id = "idDateType" + strI;
+                                var strAdd = document.getElementById(id).value;
+                                if (strAdd != "") {
+                                    strForm += strAdd;
+                                    if (i < 6) strForm += ",";
+                                }
+                            }
+                            strForm += "&spacePhoto=";
+                            strForm += urlCoverImage; //设置照片地址
+                            var strSpaceId = ajaxPar("/dreamSpace/space/addSpaceFacility.html", "post", strForm, false).data;
+                            console.log("strSpaceId：");
+                            console.log(strSpaceId);
+                            //上传相册
+                            console.log("fileImagesLength:");
+                            console.log(fileImages.length);
+                            for (var i = 0; i < fileImages.length; i++) { //file对象为用户选择的某一个文件 
+                                console.log("第" + i + "个文件名为：" + fileImages[i].name); //此时取出这个文件进行处理，这里只是显示文件名
+                                var thisFormData = new FormData(); //准备参数
+                                thisFormData.append("file", fileImages[i]);
+                                if (arrayAlbumName[i] != undefined && arrayAlbumName[i] != "") { //如果输入为空
+                                    thisFormData.append("photoName", arrayAlbumName[i]);
+                                } else {
+                                    thisFormData.append("photoName", "照片");
+                                }
+                                thisFormData.append("spaceId", strSpaceId);
+                                var ajaxReturn = "发布失败";
+                                ajaxReturn = ajaxFormData("post", "/dreamSpace/space/uploadPhoto.html", thisFormData, false); //上传本张照片
+                                console.log("ajaxReturn：");
+                                console.log(ajaxReturn.message);
+                                document.getElementById("inputReturn").value = ajaxReturn.message;
+                            }
+                            //跳转详情
+                            if (ajaxReturn.message == "success") {
+                                console.log("发布成功");
+                                return true;
+                            } else {
+                                console.log("发布失败");
+                                return false;
+                            }
+                        }
+
+                        function getAlbumName_spacespublish_html(inputTitleid, titleLength) {
+                            var arr = new Array();
+                            for (var i = 0; i < titleLength; i++) {
+                                var thisId = inputTitleid + i;
+                                console.log("thisId");
+                                console.log(thisId);
+                                console.log('document.getElementById("thisId ").value');
+                                console.log(document.getElementById(thisId).value);
+                                var strTemp = document.getElementById(thisId).value;
+                                if (strTemp == undefined) {
+                                    strTemp = "";
+                                }
+                                arr.push(strTemp);
+                            }
+                            console.log("arr");
+                            console.log(arr);
+                            return arr;
+                        }
+                        </script>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <center>
+                                    <h4>3.规格</h4>
+                                </center>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">适合活动</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="col-sm-12" name="spaceTypeId">
+                                    <option ng-repeat="spacetype in spacetypes" ng-value="spacetype.spaceTypeId" ng-bind="spacetype.spaceTypeName"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--人数-->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">人数容积</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="col-sm-12" name="spaceNum">
+                                    <option ng-repeat="guestnumber in guestnumbers" ng-value="guestnumber.nameGuestnumber" ng-bind="guestnumber.textGuestnumber"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.facilityId.$invalid && ( nameSpacesPublishForm.facilityId.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">设施与环境</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4" id="idFormFacility" ng-repeat="facility in facilitys">
+                                        <label class="checkbox-inline col-sm-12">
+                                            <input class="facilityCB" type="checkbox" value="{{facility.facilityId}}" onClick="Checkbox2Input(this.form,'idFormFacility','inputFacilityId')" /><span ng-bind="facility.facilityName"></span>
+                                        </label>
+                                    </div>
+                                    <input id="inputFacilityId" name="facilityId" ng-model="controller.facilityId" required hidden />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.facilityId.$error" ng-if="nameSpacesPublishForm.facilityId.$invalid">
+                                    <p ng-message="required" ng-bind="'至少选择一项'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <script type="text/javascript">
+                        //触发选择日期事件
+                        $(document).ready(function() {
+                            $('#inputFacilityId').change(function() {
+                                console.log("inputFacilityId");
+                                //$(this).val();
+                                $("#inputFacilityId").trigger('input');
+                            })
+                        });
+                        </script>-->
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.spaceArea.$invalid && ( nameSpacesPublishForm.spaceArea.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">总面积</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <i class="icon">&#xe616</i>
+                                <input class="form-control iconInput" type="text" placeholder="平方米m2" name="spaceArea" ng-model="controller.spaceArea" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.spaceArea.$error" ng-if="nameSpacesPublishForm.spaceArea.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'至少10平方米'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最多9,999,999平方米'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">简介</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <i class="icon">&#xe60c</i>
+                                <textarea class="form-control iconInput" name="Introduce" placeholder="纯文本无样式" type="text" style="height:500px;"></textarea>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <center>
+                                    <h4>4.价格</h4>
+                                </center>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.spacePrice.$invalid && ( nameSpacesPublishForm.spacePrice.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">价格列表</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group col-sm-12">
+                                    <span class="input-group-addon">￥</span>
+                                    <input class="form-control" placeholder="标准定金" name="spacePrice" ng-model="controller.spacePrice" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.spacePrice.$error" ng-if="nameSpacesPublishForm.spacePrice.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak>必填</p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice0.$invalid && ( nameSpacesPublishForm.daySpacePrice0.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[0].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[0].idDateType}}" name="daySpacePrice0" ng-model="controller.daySpacePrice0" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice0.$error" ng-if="nameSpacesPublishForm.daySpacePrice0.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice1.$invalid && ( nameSpacesPublishForm.daySpacePrice1.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[1].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[1].idDateType}}" name="daySpacePrice1" ng-model="controller.daySpacePrice1" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice1.$error" ng-if="nameSpacesPublishForm.daySpacePrice1.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice2.$invalid && ( nameSpacesPublishForm.daySpacePrice2.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[2].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[2].idDateType}}" name="daySpacePrice2" ng-model="controller.daySpacePrice2" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice2.$error" ng-if="nameSpacesPublishForm.daySpacePrice2.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice3.$invalid && ( nameSpacesPublishForm.daySpacePrice3.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[3].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[3].idDateType}}" name="daySpacePrice3" ng-model="controller.daySpacePrice3" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice3.$error" ng-if="nameSpacesPublishForm.daySpacePrice3.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice4.$invalid && ( nameSpacesPublishForm.daySpacePrice4.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[4].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[4].idDateType}}" name="daySpacePrice4" ng-model="controller.daySpacePrice4" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice4.$error" ng-if="nameSpacesPublishForm.daySpacePrice4.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice5.$invalid && ( nameSpacesPublishForm.daySpacePrice5.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[5].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[5].idDateType}}" name="daySpacePrice5" ng-model="controller.daySpacePrice5" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice5.$error" ng-if="nameSpacesPublishForm.daySpacePrice5.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--周一价格列表-->
+                        <div class="form-group" ng-class="{'has-error':nameSpacesPublishForm.daySpacePrice6.$invalid && ( nameSpacesPublishForm.daySpacePrice6.$touched || submitted )}">
+                            <div class="col-sm-4">
+                                <label class="form-control-label"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" ng-bind="pricelists[6].nameDateType+'价格：￥'"></span>
+                                    <input class="form-control" type="number" min="0" max="100000000" step="1000" placeholder="全天价格" id="{{pricelists[6].idDateType}}" name="daySpacePrice6" ng-model="controller.daySpacePrice6" ng-minlength="2" ng-maxlength="7" ng-pattern="/^\d+$/" required/>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.daySpacePrice6.$error" ng-if="nameSpacesPublishForm.daySpacePrice6.$invalid">
+                                    <p ng-message="required" ng-bind="'必填'" ng-cloak></p>
+                                    <p ng-message="pattern" ng-bind="'请填写小写数字'" ng-cloak></p>
+                                    <p ng-message="minlength" ng-bind="'最小￥10'" ng-cloak></p>
+                                    <p ng-message="maxlength" ng-bind="'最大￥9,999,999'" ng-cloak></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <center>
+                                    <h4>5.政策</h4>
+                                </center>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">预定政策</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-12" id="idFormSpacePolicy">
+                                    <div>
+                                        <div class="col-sm-4" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="允许议价" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','tempspacePolicy')" />允许议价
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="最佳价格" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','tempspacePolicy')" />最佳价格
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4" id="idFormSpacePolicy">
+                                            <label class="checkbox-inline col-sm-12">
+                                                <input type="checkbox" value="预订餐饮" onClick="Checkbox2Input(this.form,'idFormSpacePolicy','tempspacePolicy')" />预订餐饮
+                                            </label>
+                                        </div>
+                                        <input id="tempspacePolicy" name="spacePolicy" hidden/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="form-control-label">取消政策</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="col-sm-12" name="reservationPolicy" ng-model="controller.reservationPolicy" style="margin-bottom:20px;">
+                                    <option value="strict">严格</option>
+                                    <option value="medium">中等</option>
+                                    <option value="loose">宽松</option>
+                                </select>
+                                <div class="help-block">
+                                    <p ng-if="controller.reservationPolicy=='strict'">
+                                        严格 （Strict）：如果取消预定，不予返还定金。
+                                    </p>
+                                    <p ng-if="controller.reservationPolicy=='medium'">
+                                        中等 （Moderate）：如果在入场14天之前取消，可以返还50%的定金。
+                                    </p>
+                                    <p ng-if="controller.reservationPolicy=='loose'">
+                                        宽松 （Flexible）：如果在入场5天之前取消，可以返还50%的定金。
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--
+                                <div class="form-group">
+                                    <label class="form-control-label">封面照片</label>
+                                    <input id="inputPhotoCover" type="file" class="col-sm-12" />
+                                    <div id="resultPhotoCover" class="col-sm-6"></div>
+                                    <input type="button" onclick="readAsDataURL('inputPhotoCover','resultPhotoCover','single');" value="预览封面" class="btn btn-primary btn-lg" />
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>-->
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--
+                                <div class="form-group">
+                                    <label class="form-control-label">封面照片标题</label>
+                                    <input id="inputPhotoCoverName" type="text" class="col-sm-12" placeholder="请输入封面照片标题" />
+                                    <input type="button" onclick="uploadPhoto('inputPhotoCover','inputPhotoCoverName','undefine','single');" value="上传封面" class="btn btn-primary btn-lg" />
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>-->
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--
+                                <div class="form-group">
+                                    <label class="form-control-label">场地封面相册地址</label>
+                                    <input id="inputPhotoCoverUrl" type="text" class="col-sm-12" name="spacePhoto" />
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>-->
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <!--
+                                <div class="form-group">
+                                    <label class="form-control-label">场地ID</label>
+                                    <input id="inputSpaceId" type="text" class="col-sm-12" name="spaceId" />
+                                </div>-->
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary col-sm-12" type="submit" ng-show="!submitted&&!submiting">发布场地</button>
+                                <button class="btn btn-primary col-sm-12" type="submit" ng-show="submiting">发布中 . . .</button>
+                                <button class="btn btn-primary col-sm-12" type="submit" ng-show="submitted&&!submiting">重新发布</button>
+                            </div>
+                            <!--addSpace();-->
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                        <div class="form-group has-error">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-7">
+                                <div class="help-block" ng-messages="nameSpacesPublishForm.$error" ng-if="submitted&&!submiting && nameSpacesPublishForm.$invalid">
+                                    <p ng-bind="'发布失败，请检查填写内容'" ng-cloak></p>
+                                </div>
+                            </div>
+                            <!--onclick="insertDemand();"-->
+                        </div>
+                        <!--    -->
+                        <!--    -->
+                        <!--    -->
+                    </fieldset>
+                </form>
+                <!--    -->
+                <!--    -->
+                <!--    -->
+            </div>
+        </div>
+    </div>
+    <!--/.发布场地-->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div ng-include="'includes/footer.html'"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- js：AngularJS -->
+    <script src="js/angular.min.1.3.9.js"></script>
+    <!-- js：AngularJSCookies -->
+    <script src="js/angular-cookies.1.0.8.js"></script>
+    <!-- JS：AngularJS-表单提示 -->
+    <script src="libs/angular-messages/angular-messages.js"></script>
+    <!-- js:Bootstrap -->
+    <script src="libs/bootstrap-3.3.6/dist/js/bootstrap.min.js"></script>
+    <!-- js:bootstrap-datetimepicker -->
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <!-- js:bootstrap-datetimepicker.zh-CN -->
+    <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <!-- js:百度地图1.1API 
+    <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>-->
+    <!-- js:自定义 -->
+    <script src="js/global.js"></script>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <script>
+    var appSpacesPublishHtml = angular.module("spacesPublishHtmlApp", ["ngMessages"], function() {
+        console.log("ng-app : spacesPublishHtmlApp");
+    }); //'ngSanitize'
+    appSpacesPublishHtml.directive("changedistrict", function() {
+        return function(scope, element, attr) {
+            element.on("click", function() {
+                console.log("onclick");
+                console.log("changedistrict：" + scope.thisSelectCityId);
+                scope.$apply();
+            });
+        };
+    });
+    appSpacesPublishHtml.controller("spacepublishController", function spacepublishController($scope, $http) {
+        //发布者ID
+        $scope.thisUserId = getCookie("userId");
+        //城市
+        var url = "dreamSpace/cityInfo/cityInfo.html";
+        $scope.thisSelectCityId = "0001";
+        $http.get(url).success(function(response) {
+            $scope.citys = response.cityInfos;
+            $scope.thisSelectCityId = $scope.citys[0].cityId;
+        });
+        //区域
+        var url = "dreamSpace/standard/districtInfo.html";
+        //alert(url);
+        $http.get(url).success(function(response) {
+            $scope.districts = response.districtInfo;
+            //alert(response.cityInfos);
+        });
+        //活动类型
+        var url = "dreamSpace/spaceTypeInfo/spaceTypeInfo.html";
+        $http.get(url).success(function(response) {
+            $scope.spacetypes = response.spaceTypeInfos;
+        });
+        //设施
+        var url = "dreamSpace/facilityInfo/facilityInfo.html";
+        $http.get(url).success(function(response) {
+            $scope.facilitys = response.facilityInfos;
+        });
+        //人数范围
+        var url = "json/spaceNum.json";
+        //alert(url);
+        $http.get(url).success(function(response) {
+            $scope.guestnumbers = response;
+        });
+        //价格类型
+        var url = "json/listPriceType.json";
+        $http.get(url).success(function(response) {
+            $scope.pricelists = response;
+        });
+        //取消政策
+        $scope.controller.reservationPolicy = 'strict';
+        //照片错误检测
+        $scope.inputPhotoErrorType = "1";
+        $scope.inputPhotoErrorDialog = "照片错误警告";
+        $scope.titlePhotoErrorDialog = "照片标题数量错误警告";
+        $scope.controller.lengthPhotoInputName = 0; //选择照片数量初始化
+        //提交表单 
+        $scope.submitted = false;
+        $scope.submiting = false;
+        $scope.submit = function() {
+            console.log("$scope.submitted");
+            console.log($scope.submitted);
+            $scope.submiting = true;
+            if (!$scope.nameSpacesPublishForm.$invalid) {
+                console.log("表单验证正确");
+                if (spacesPublish()) {
+                    console.log("发布成功");
+                    setTimeout('window.location.href = "/success.html?type=space";', 1000);
+                } else {
+                    console.log("发布失败");
+                }
+            } else {
+                console.log("表单验证有错");
+            }
+            $scope.submiting = false;
+            $scope.submitted = true;
+        }
+    });
+    </script>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</body>
+
+</html>

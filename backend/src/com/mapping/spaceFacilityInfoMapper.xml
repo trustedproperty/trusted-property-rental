@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 场地设施信息数据层 -->
+<mapper namespace="com.service.ISpaceFacilityInfoService">
+
+	<!-- 场地设施信息列表 -->
+	<resultMap type="SpaceFacilityInfo" id="spaceFacilityInfoList">
+		<id column="spaceFacilityId" property="spaceFacilityId" />
+		<result column="spaceId" property="spaceId" />
+		<result column="facilityId" property="facilityId" />
+		<association property="facilityInfo" javaType="FacilityInfo">
+			<id column="facilityId" property="facilityId" />
+			<result column="facilityName" property="facilityName" />
+		</association>
+	</resultMap>
+	<!-- 场地设施信息列表 -->
+
+	<!-- 查询场地设施 -->
+	<select id="facilitySpaceId" resultMap="spaceFacilityInfoList"
+		parameterType="string">
+		select
+		sF.spaceFacilityId,f.facilityId,f.facilityName
+		from
+		spaceFacilityInfo sF inner join facilityInfo f on
+		sF.facilityId=f.facilityId where sF.spaceId=#{spaceId}
+	</select>
+	<!-- 查询场地设施 -->
+
+	<!-- 查询场地设施 ————修改场地 -->
+	<select id="queryFacilityId" resultMap="spaceFacilityInfoList"
+		parameterType="string">
+		select
+		spaceFacilityId,facilityId
+		from
+		spaceFacilityInfo
+		where spaceId=#{spaceId}
+	</select>
+	<!-- 查询场地设施 ————修改场地 -->
+
+	<!-- 删除场地设施 -->
+	<delete id="removeFacilityId" parameterType="List">
+		delete from
+		spaceFacilityInfo
+		where spaceId=#{spaceId}
+	</delete>
+	<!-- 删除场地设施 -->
+
+	<!-- 添加场地设施 -->
+	<insert id="addSpaceFacility" parameterType="List">
+
+		<if test="list != null and list.size>0">
+			INSERT spaceFacilityInfo(spaceFacilityId,spaceId,facilityId) VALUES
+			<foreach collection="list" item="item" index="index"
+				separator=",">
+				(#{item.spaceFacilityId},#{item.spaceId},#{item.facilityId})
+			</foreach>
+		</if>
+
+	</insert>
+	<!-- 添加场地设施 -->
+</mapper>

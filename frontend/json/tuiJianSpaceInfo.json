@@ -1,0 +1,81 @@
+[{
+    "spaceTypeId": "",
+    "spaceTypeName": "别墅轰趴",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/别墅轰趴.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0002&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "Party",
+    "spaceTypeName": "朋友聚会",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/茶楼.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0001&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "最流行的聚会方式",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/最流行的聚会方式.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0001&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "梦中的婚礼",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/梦中的婚礼.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0005&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "培训",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/培训.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0004&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "演出秀",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/演唱会.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0006&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "开会",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/开会.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0003&spaceNum=&facilityId=&spacePrice=&price="
+}, {
+    "spaceTypeId": "00001",
+    "spaceTypeName": "创意空间",
+    "spaceTypeSlogan": "",
+    "spaceNum": "",
+    "spacePrice": "",
+    "facilityId": "TV",
+    "price": "",
+    "imgTuijianspace": "images/tuijian/创意空间.jpg",
+    "hrefSearch": "search.html?cityId=&districtId=&spaceTypeId=0006&spaceNum=&facilityId=&spacePrice=&price="
+}]

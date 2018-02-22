@@ -1,0 +1,267 @@
+/*兼容性*/
+*[hidden] { display: none; }
+
+/*修改默认*/
+.form_datetime .form-control { background-color: white; }
+
+/*图标*/
+.iconfont { font-family: "iconfont"; font-size: 16px; font-style: normal; }
+@font-face { font-family: 'iconfont'; src: url('//at.alicdn.com/t/font_1472648303_9457831.eot'); /* IE9*/ src: url('//at.alicdn.com/t/font_1472648303_9457831.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	url('//at.alicdn.com/t/font_1472648303_9457831.woff') format('woff'), /* chrome、firefox */
+	url('//at.alicdn.com/t/font_1472648303_9457831.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+url('//at.alicdn.com/t/font_1472648303_9457831.svg#iconfont') format('svg'); /* iOS 4.1- */ }
+.icon { font-family: "iconfont"; width: 20px; height: 36px; left: 26px; z-index: 5; position: absolute; font-size: 16px; font-style: normal; line-height: 36px; text-align: left; }
+.explain { font-family: "iconfont"; position: absolute; left: 6%; z-index: 5; width: 70px; height: 36px; font-style: normal; line-height: 36px; text-align: left; }
+.iconInput { padding-left: 36px; }
+.explainInput { padding-left: 88px; }
+
+/*需求弹出框*/
+.dialogEnquiry .form-group { margin-bottom: 1px; }
+.dialogEnquiry .explain { left: 25px; }
+
+/*布局*/
+body { margin: 0; width: 100%; font-family: Microsoft YaHei, "微软雅黑", simhei, Helvetica, Arial, sans-serif; }
+//background-color: #f5f5f5;
+a { cursor: pointer; }
+label { height: 36px; line-height: 36px; font-size: 15px; float: right; }
+input { height: 36px; line-height: 36px; }
+select { height: 36px; line-height: 36px; }
+textarea { line-height: 36px; }
+.form-control { height: 36px; line-height: 36px; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; background-color: white; }
+#homepage-search-bar .form-control { height: 48px; line-height: 48px; }
+.angle { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.hide { display: none; }
+
+/*浮动框*/
+.float_bg { position: fixed; top: 0px; }
+.autoScroll { height: 650px; overflow: auto; }
+
+/*页眉*/
+.header { height: 50px; width: 100% }
+.navbar { height: 50px; width: 100%; padding: 0px; margin: 0px; background-color: white; }
+.navbar a { height: 49px; line-height: 35px; margin-left: 4px; }
+.navbar img { height: 30px; line-height: 35px; margin-left: 4px; }
+.navbar span { font-size: 15px; line-height: 20px; margin-left: 4px; }
+.navbar .iconfont { font-size: 26px; }
+.dropdown { line-height: 30px; font-size: 15px; }
+//导航用户图标
+.navber-user { color: #5e6166; }
+.navber-user a { color: #5e6166; }
+.navber-user img { color: #5e6166; height: 30px; line-height: 30px; margin-left: 3px; }
+.navber-user .iconfont { font-size: 26px; }
+//导航下拉菜单
+.navber-user .dropdown-menu li { height: 36px; margin-left: 5px; }
+.navber-user .dropdown-menu li a { height: 36px; line-height: 36px; border-bottom: 1px solid #f5f5f5; }
+.navber-admin .dropdown-menu li { height: 36px; }
+.navber-admin .dropdown-menu li a { height: 36px; line-height: 36px; border-bottom: 1px solid #f5f5f5; }
+.dropdown-menu .iconfont { font-size: 16px; }
+
+/*首页*/
+.content { width: 100% }
+.banner { height: 500px; width: 100%; z-index: -1; display: block }
+.banner-bgimg { height: 500px; width: 100%; z-index: -1; position: absolute; float: left; overflow: hidden }
+.banner-bgimg img { height: 500px; width: 100%; z-index: -1; position: absolute; float: left }
+.banner-title { width: 100%; margin: 9% 0 0 0; float: left; color: white; text-align: center }
+.banner-title h1 { font-size: 60px; text-align: center; line-height: 62px }
+.banner-title p { font-size: 18px; text-align: center; line-height: 38px; }
+.content-title { height: 60px; width: 100%; margin: 40px 0px 5px 0px; text-align: center; line-height: 60px; }
+.content-title h2 { font-size: 28px; }
+
+/*banner2*/
+.banner2 { height: 310px; background-size: cover; background-color: #ccc; position: relative; }
+.banner2 img { position: absolute; }
+.banner2 .banner-title { z-index: 2; position: relative; color: #fff; font-size: 48px; display: block; text-align: center; padding-top: 0px; }
+.banner2 .banner-subtitle { z-index: 2; position: relative; color: #fff; font-size: 28px; display: block; text-align: center; padding-top: 200px; }
+
+/*内容*/
+.article { width: 90%; position: relative; margin: 0 auto; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto; line-height: 24px; color: #333; font-size: 16px; padding-bottom: 40px; }
+.article-title { font-size: 26px; line-height: 30px; color: #666; display: block; font-weight: 700; padding: 35px 0; }
+
+/*说明*/
+.cue-tip { background-color: #f7f7f7; clear: both; }
+.cue-tip,
+.cue-tip table tr { height: 145px; }
+.cue-tip .iconfont { font-size: 60px; color: #F4616D; }
+.cue-title { font-size: 20px; line-height: 30px; color: #666; padding: 0; }
+.cue-tip .sub-title { color: #999; font-size: 14px; }
+.cue-tip img { width: 80px; margin-right: 20px; }
+
+/*页脚*/
+.footer { background-color: #373737; height: 200px; padding: 40px 0 50px 0px; }
+.footer-brand { height: 50px; }
+.footer-logo { font-size: 30px; line-height: 30px; }
+.footer-logo img { height: 35px; width: 100px; margin-top: -5px; }
+.footer-call { font-size: 20px; line-height: 46px; padding-left: 0px; color: #aaa; }
+.footer-copyright { margin-top: 20px; }
+.footer-copyright a { color: #aaa; font-weight: 560; line-height: 22px; }
+.footer-copyright a:hover { text-decoration: none; color: #888; -webkit-transition: all .5s ease; transition: all .5s ease; }
+.footer-links a { float: right; padding-left: 28px; line-height: 38px; font-size: 18px; font-weight: 600; color: white; }
+.footer-follow { color: #F4616D; font-size: 18px; line-height: 8px; font-weight: 500; }
+.footer-follow span { line-height: 18px; }
+.footer-follow img { width: 40px; height: 40px; border-radius: 50%; margin-left: 5px; }
+
+/*#F4616D*/
+
+/*面板卡*/
+
+.metro { height: 200px; line-height: 200px; padding: 0px; border-radius: 3px; margin-top: 12px; }
+.metro-sm-4 { width: 96% }
+.metro-sm-8 { width: 98% }
+.metro a { font-size: 26px; filter: alpha(opacity=90); -moz-opacity: 0.9; -khtml-opacity: 0.9; opacity: 0.9; text-decoration: none; }
+.metro a:hover { color: white; text-decoration: none; filter: alpha(opacity=100); -moz-opacity: 1; -khtml-opacity: 1; opacity: 1; animation: metro 1s; -moz-animation: metro 1s;    /* Firefox */ -webkit-animation: metro 1s;    /* Safari 和 Chrome */ -o-animation: metro 1s;    /* Opera */ animation-fill-mode: forwards; }
+.background { height: inherit; width: inherit; z-index: 0; position: absolute; display: block }
+.background img { height: inherit; width: inherit; z-index: 0; display: block; position: absolute }
+.block { height: inherit; width: inherit; display: block; overflow: hidden }
+.href { z-index: 3; height: inherit; width: 100%; text-align: center; display: block; color: white; }
+.title { z-index: 2; height: inherit; width: 100%; text-align: center; display: block; color: white; margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0; }
+.mask { z-index: 1; height: inherit; width: inherit; background-color: #000000; opacity: .1; filter: alpha(opacity=10); display: block; position: absolute; }
+.pro-image { height: 100%; width: 100%; display: block; z-index: -1; position: absolute; }
+@keyframes metro {
+	from { }
+	to { top: -50px; font-size: 32px; }
+}
+@-moz-keyframes metro
+
+/* Firefox */
+{
+	from { }
+	to { top: -50px; font-size: 32px; }
+}
+@-webkit-keyframes metro
+
+/* Safari 和 Chrome */
+{
+	from { }
+	to { top: -50px; font-size: 32px; }
+}
+@-o-keyframes metro
+
+/* Opera */
+{
+	from { }
+	to { top: -50px; font-size: 32px; }
+}
+
+/*场地列表*/
+.cards { height: 200px; width: 100%; display: block; background-color: white; border-bottom: 1px solid #e0e0e0; }
+.card-img-top-container-old { z-index: 1; position: absolute; height: inherit; width: inherit; }
+.card-icon { z-index: 2; margin-top: 160px; float: left; }
+.imgIcon { z-index: 9; height: 24px; width: 24px; margin-left: 10px; float: left; }
+.imgIconAbsolute { z-index: 9; margin-left: 10px; height: 24px; width: 24px; float: left; position: absolute; }
+.textCardIcon { z-index: 9; margin-left: 38px; margin-top: 5px; float: left; color: white; position: absolute; }
+
+/*新场地列表*/
+.card { height: 350px; position: relative; background-color: #fff; border-bottom: 1px solid #e0e0e0; margin-bottom: 20px; width: 100%; }
+.card-img-top-container { z-index: 1; height: 100px; width: inherit; display: block; }
+.card-img-top { z-index: 0; height: 200px; width: inherit; display: block; position: absolute; }
+.card-img-caption { height: 48px; width: 96px; top: 90px; color: #fff; line-height: 1; padding: 20% 20px 10px; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8); position: absolute; }
+.card-img-caption img { height: 24px; width: 24px; float: left; }
+.card-img-caption span { width: 24px; margin-left: 5px; float: left; line-height: 24px; }
+.card-img-caption:hover { color: #cc3d55; text-decoration: none; }
+.card-block { height: 100px; width: inherit; display: block; position: absolute; }
+.card-block p { margin: 12px 5px 5px 15px; }
+
+/*弹出框*/
+.modal-dialog { width: 400px; }
+#login-tab li { width: 50%; }
+
+/*ppt*/
+#homepage-ppt { background-color: #0085a7; height: 500px; width: 100%; }
+#homepage-ppt .content-title { color: white; }
+#homepage-ppt .container-fluid { width: 100%; }
+#homepage-ppt .carousel-inner { height: 500px; }
+#homepage-ppt .carousel-control { height: 500px; font-size: 100px; padding-top: 170px; }
+#homepage-ppt .carousel-caption { width: 60%; display: block; position: relative; padding-top: 80px; font-size: 16px; line-height: 36px; }
+#homepage-ppt .carousel-caption p { margin-top: 30px; }
+#homepage-ppt .carousel-caption img { height: 120px; width: 120px; margin-top: 10px; }
+#homepage-ppt .carousel-caption .ppt-content { padding-top: 0px; padding-left: 5%; padding-right: 5%; padding-bottom: 50px; }
+
+/*myCarousel*/
+#myCarousel { height: 500px; }
+#myCarousel .carousel-inner { margin-left: 0%; width: 100%; }
+#myCarousel .item { height: 500px; overflow: hidden; }
+#myCarousel .item img { width: 100%; position: absolute; clip: rect(100px auto 600px auto); margin: -100px auto auto auto; }
+#myCarousel .carousel-control { font-size: 100px; padding-top: 10%; }
+#carousel-album { height: 500px; }
+#carousel-album .carousel-inner { margin-left: 0%; width: 100%; }
+#carousel-album .item { height: 500px; overflow: hidden; }
+#carousel-album .item img { width: 100%; position: absolute; clip: rect(100px auto 600px auto); margin: -100px auto auto auto; }
+#carousel-album .carousel-control { font-size: 100px; padding-top: 10%; }
+
+/*场地详情*/
+.SpaceLink { font-size: 22px; }
+.HostName { font-size: 16px; }
+.Number { font-weight: 900 }
+
+/*清除浮动*/
+.clearfix { *+height: 5px; }
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+
+/*
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover { color: white; background-color: #286090; border: 1px solid #204d74; border-bottom-color: transparent; }
+.nav-tabs>li>a { background-color: white; color: black; border: 1px solid transparent; }
+*/
+.comments { width: 100%;    /*自动适应父布局宽度*/ overflow: auto; word-break: break-all;    /*在ie中解决断行问题(防止自动变为在一行显示，主要解决ie兼容问题，ie8中当设宽度为100%时，文本域类容超过一行时，当我们双击文本内容就会自动变为一行显示，所以只能用ie的专有断行属性“word-break或word-wrap”控制其断行)*/ }
+
+/*bootstrap覆盖*/
+.nav-tabs>li>a { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; margin: 0px; }
+
+/*管理员系统*/
+.mark { background-color: #F1F3F2; }
+.dataTables_length { display: none; }
+.dataTables_filter { display: none; }
+
+/*
+#carousel-album { height: 100px; float: left; }
+#carousel-album .carousel-inner { margin-left: 0%; width: 100%; }
+#carousel-album .item { height: 100px; overflow: hidden; }
+#carousel-album .item img { width: 100%; position: absolute; }
+#carousel-album .carousel-control { font-size: 30px; padding-top: 5px; }*/
+
+/*备用*/
+@keyframes myfirst {
+	from { background: red; }
+	to { background: yellow; }
+}
+@-moz-keyframes myfirst
+
+/* Firefox */
+{
+	from { background: red; }
+	to { background: yellow; }
+}
+@-webkit-keyframes myfirst
+
+/* Safari 和 Chrome */
+{
+	from { background: red; }
+	to { background: yellow; }
+}
+@-o-keyframes myfirst
+
+/* Opera */
+{
+	from { background: red; }
+	to { background: yellow; }
+}
+#panelFacilityChentboxs { background-color: white; width: 600px; height: 420px; position: absolute; z-index: 99; border: 1px solid #DCDCDC; border-bottom: 1px solid #F7F7F7; }
+#mapContainer { border: 1px solid #e0e0e0; }
+#mapContainer label { max-width: none; }
+
+/*修改angular*/
+.ng-cloak { display: none; }
+
+/*浏览器升级*/
+
+/*浏览器升级*/
+.browserup { position: fixed; top: 0; left: 0; z-index: 9999999; display: block; width: 100%; height: 500px; background-color: #606a73; font: 26px Arial, "Microsoft Yahei"; color: #fff; text-align: center; }
+.browserup .main { width: 1000px; margin: 100px auto 0; }
+.browserup .title { font-size: 46px; line-height: 1.3; }
+.browserup .text { margin-top: 50px; font-size: 20px; }
+.browserup .text a { color: #ff9000; }
+.browserup .text a:hover { text-decoration: underline; }
+.browserup .browserup-close input { margin-top: 50px; width: 100px; height: 40px; background-color: #ff9000; color: #fff; font-size: 20px; cursor: pointer; }
+.browserup .browserup-close input:hover { background-color: #e38101; }

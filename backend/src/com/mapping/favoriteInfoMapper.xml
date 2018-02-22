@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 收藏信息数据层 -->
+<mapper namespace="com.service.IFavoriteInfoService">
+
+	<!-- 添加收藏 -->
+	<insert id="addFavorite" parameterType="FavoriteInfo">
+		insert
+		favoriteInfo(favoriteId,spaceId,userId,time)
+		values(#{favoriteId},#{spaceId},#{userId},now())
+	</insert>
+	<!-- 添加收藏 -->
+	
+	<!-- 取消收藏 -->
+	<delete id="removeFavorite" parameterType="string">
+		delete from favoriteInfo where userId=#{userId} and spaceId=#{spaceId}
+	</delete>
+	<!-- 取消收藏 -->
+	
+	<!-- 验证是否收藏 -->
+	<select id="checkSpace" parameterType="string" resultType="int">
+		select Count(*) from favoriteInfo where userId=#{userId} and spaceId=#{spaceId}
+	</select>
+	<!-- 验证是否收藏 -->
+</mapper>

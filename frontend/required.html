@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    
+<title>场地派 - 场地日租平台</title><!-- 作者：李浩铭   -->
+    <link rel="shortcut icon" type="image/x-icon" href="images\www.favicon.ico" media="screen" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- css:Bootstrap -->
+    <link href="libs/bootstrap-3.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- css:bootstrap-datetimepicker -->
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- css:自定义 -->
+    <link rel="stylesheet" media="all" href="css/global.css" />
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</head>
+
+<body ng-app="RequiredAPP" ng-controller="requiredController">
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div class="header"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- 清除浮动 -->
+    <div class="clearfix" style="margin-bottom: 20px;"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div class="container-fluid" style="height:500px;font-size:16px;">
+        <div class="row-fluid">
+            <div class="col-sm-2">
+                <a href="require.html" class="btn btn-primary col-sm-12" style="font-size:16px;">发布需求</a>
+            </div>
+            <div class="col-sm-10">
+                <!--    -->
+                <!--    -->
+                <!--    -->
+                <div class="row-fluid">
+                    <div class="col-sm-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">
+                                        需求单号
+                                    </th>
+                                    <th style="width: 10%;">
+                                        活动类型
+                                    </th>
+                                    <th style="width: 13%;">
+                                        活动时间
+                                    </th>
+                                    <th style="width: 12%;">
+                                        需求场地
+                                    </th>
+                                    <th style="width: 15%;">
+                                        城市区域
+                                    </th>
+                                    <th style="width: 12%;">
+                                        活动人数
+                                    </th>
+                                    <th style="width: 13%;">
+                                        发布时间
+                                    </th>
+                                    <th style="width: 12%;">
+                                        回复状态
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="required in requireds">
+                                    <td ng-bind="required.demandId">
+                                        需求单号
+                                    </td>
+                                    <td>
+                                        <div ng-bind="required.activityType"></div>
+                                    </td>
+                                    <td ng-bind="required.beginTime">
+                                        开始时间
+                                    </td>
+                                    <td>
+                                        <span ng-if="required.demandSpace ==''" ng-bind="'任意场地'">需求场地为空</span>
+                                        <span ng-if="required.demandSpace != ''" ng-bind="required.demandSpace">需求场地不为空</span>
+                                    </td>
+                                    <td>
+                                        <div ng-if="required.demandCity ==''" ng-bind="'不限城区'"></div>
+                                        <div ng-if="required.demandCity != ''" ng-bind="required.demandCity+' '+required.districtId"></div>
+                                    </td>
+                                    <td>
+                                        <span ng-if="required.demandNum==''">暂未确定</span>
+                                        <span ng-if="required.demandNum=='30'">30人以下</span>
+                                        <span ng-if="required.demandNum=='31-50'">31-50人</span>
+                                        <span ng-if="required.demandNum=='51-100'">51-100人</span>
+                                        <span ng-if="required.demandNum=='101-200'">101-200人</span>
+                                        <span ng-if="required.demandNum=='201-300'">201-300人</span>
+                                        <span ng-if="required.demandNum=='301-500'">301-500人</span>
+                                        <span ng-if="required.demandNum=='500'">500人以上</span>
+                                    </td>
+                                    <td ng-bind="required.time">
+                                        发布时间
+                                    </td>
+                                    <td>
+                                        <span ng-if="required.demandStatus==0" style="color:green;">已完成</span>
+                                        <span ng-if="required.demandStatus==1" style="color:blue;">已看场</span>
+                                        <span ng-if="required.demandStatus==2" style="color:green;">已付定金</span>
+                                        <span ng-if="required.demandStatus==3" style="color:green;">已付款</span>
+                                        <span ng-if="required.demandStatus==4" style="color:orange;">未联系</span>
+                                        <span ng-if="required.demandStatus==5" style="color:blue;">已联系</span>
+                                        <span ng-if="required.demandStatus==6" style="color:red;">已作废</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix" style="margin-bottom: 20px;"></div>
+    <!-- 清除浮动 -->
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <div ng-include="'includes/footer.html'"></div>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!-- ks:jQuery -->
+    <script src="libs/jquery/jquery-2.2.4.min.js"></script>
+    <!-- js:Bootstrap最新 -->
+    <script src="libs/bootstrap-3.3.6/dist/js/bootstrap.min.js"></script>
+    <!-- JS：AngularJS -->
+    <script src="js/angular.min.1.3.9.js"></script>
+    <!-- js：AngularJSCookies -->
+    <script src="js/angular-cookies.1.0.8.js"></script>
+    <!-- js:bootstrap-datetimepicker -->
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <!-- js:bootstrap-datetimepicker.zh-CN -->
+    <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <!-- js:自定义 -->
+    <script src="js/global.js"></script>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <script>
+    var modRequired_Html = angular.module("RequiredAPP", []);
+    modRequired_Html.controller("requiredController", function requiredController($scope, $http) {
+        //登录信息        
+        $scope.cookieUserId = getCookie("userId");
+        console.log("$scope.cookieUserId");
+        console.log($scope.cookieUserId);
+        //全部需求
+        var url = "dreamSpace/space/queryDemand.html?userId=" + getCookie("userId");
+        $http.get(url).success(function(response) {
+            $scope.requireds = response.demandInfos;
+            //alert(requireds);
+        });
+    });
+    </script>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+</body>
+
+</html>

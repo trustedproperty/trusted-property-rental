@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 区别与其他sql映射文件不同 需求信息数据层 -->
+<mapper namespace="com.service.IDemandInfoService">
+
+	<!-- 需求信息列表 -->
+	<resultMap type="DemandInfo" id="demandInfoList">
+		<id column="demandId" property="demandId" />
+		<result column="spaceId" property="spaceId" />
+		<result column="demandSpace" property="demandSpace" />
+		<result column="demandCity" property="demandCity" />
+		<result column="districtId" property="districtId" />
+		<result column="demandNum" property="demandNum" />
+		<result column="timeLength" property="timeLength" />
+		<result column="activityType" property="activityType" />
+		<result column="time" property="time" />
+		<result column="beginTime" property="beginTime" />
+		<result column="price" property="price" />
+		<result column="userId" property="userId" />
+		<result column="contacts" property="contacts" />
+		<result column="contactsPhone" property="contactsPhone" />
+		<result column="demandStatus" property="demandStatus" />
+		<result column="timeFloat" property="timeFloat" />
+		<result column="additionalDemand" property="additionalDemand" />
+		<result column="demandDescribe" property="demandDescribe" />
+		<result column="priorityArea" property="priorityArea" />
+		<result column="spaceEquip" property="spaceEquip" />
+		<result column="equipDescribe" property="equipDescribe" />
+		<result column="unitName" property="unitName" />
+	</resultMap>
+	<!-- 需求信息列表 -->
+
+	<!-- 查询需求 -->
+	<select id="queryDemand" parameterType="string" resultMap="demandInfoList">
+		select
+		demandId,demandSpace,time,beginTime,activityType,demandStatus,demandCity,districtId,demandNum
+		from
+		demandInfo where userId=#{userId} ORDER BY time desc
+	</select>
+	<!-- 查询需求 -->
+
+	<!-- 发布需求 -->
+	<insert id="addDemand" parameterType="DemandInfo">
+		insert
+		demandInfo(demandId,spaceId,demandSpace,demandCity,districtId,demandNum,timeLength,activityType,time,beginTime,price,userId,contacts,contactsPhone,demandStatus,additionalDemand,demandDescribe,unitName)
+		values(#{demandId},#{spaceId},#{demandSpace},#{demandCity},#{districtId},#{demandNum},#{timeLength},#{activityType},now(),#{beginTime},#{price},#{userId},#{contacts},#{contactsPhone},4,#{additionalDemand},#{demandDescribe},#{unitName})
+	</insert>
+	<!-- 发布需求 -->
+
+	<!-- 查询新需求数量 -->
+	<select id="newDemand" resultType="int">
+		select count(*) from
+		demandInfo where demandStatus=4
+	</select>
+	<!-- 查询新需求数量 -->
+
+	<!-- 查询未联系需求 -->
+	<select id="queryNoDemand" resultMap="demandInfoList">
+		select
+		demandId,time,beginTime,demandCity,districtId,activityType,timeLength,price,demandSpace,contacts,contactsPhone,demandStatus
+		from demandInfo where demandStatus=4 ORDER BY time desc
+	</select>
+	<!-- 查询未联系需求 -->
+
+	<!-- 查询全部需求 -->
+	<select id="queryDemands" resultMap="demandInfoList">
+		select
+		demandId,time,beginTime,demandCity,districtId,activityType,timeLength,price,demandSpace,contacts,contactsPhone,demandStatus
+		from demandInfo ORDER BY time desc
+	</select>
+	<!-- 查询全部需求 -->
+
+	<!-- 查询需求详情 -->
+	<select id="queryDetil" resultType="DemandInfo">
+		select
+		demandId,spaceId,contacts,contactsPhone,unitName,activityType,demandNum,price,demandSpace,demandCity,districtId,timeLength,time,beginTime,timeFloat,demandStatus,additionalDemand,demandDescribe,spaceEquip,equipDescribe,priorityArea
+		from demandInfo where demandId=#{demandId}
+	</select>
+	<!-- 查询需求详情 -->
+
+	<!-- 修改需求信息 -->
+	<update id="updateDemand" parameterType="DemandInfo">
+		update demandInfo set
+		districtId=#{districtId},demandStatus=#{demandStatus},demandDescribe=#{demandDescribe},additionalDemand=#{additionalDemand},spaceEquip=#{spaceEquip},equipDescribe=#{equipDescribe}
+		where demandId=#{demandId}
+	</update>
+	<!-- 修改需求信息 -->
+
+	<!-- 批量修改需求状态 -->
+	<update id="updateStatus" parameterType="List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update demandInfo
+			<set>
+				demandStatus=#{item.demandStatus}
+			</set>
+			where demandId=#{item.demandId}
+		</foreach>
+	</update>
+	<!-- 批量修改需求状态 -->
+</mapper>
